@@ -56,16 +56,28 @@ const DetailPage = () => {
         // });
         // setImages(response.results);
         let arr: any = [];
-        data?.artwork?.map((ele: any, i: number) => {
-          if (
-            arr?.length < 20 &&
-            ele?.type == "poster" &&
-            !ele?.img?.includes("medium") &&
-            !ele?.img?.includes("small")
-          )
-            arr.push(ele?.img);
-          else return;
-        });
+        console.log(data?.artwork);
+
+        data?.artwork !== undefined
+          ? data?.artwork?.map((ele: any, i: number) => {
+              if (
+                arr?.length < 20 &&
+                ele?.type == "poster" &&
+                !ele?.img?.includes("medium") &&
+                !ele?.img?.includes("small")
+              )
+                arr.push(ele?.img);
+              else return;
+            })
+          : data?.characters?.map((ele: any, i: number) => {
+              if (
+                arr?.length < 20 &&
+                !ele?.image?.includes("medium") &&
+                !ele?.image?.includes("small")
+              )
+                arr.push(ele?.image);
+              else return;
+            });
         console.log(arr);
 
         // if (arr.length === 0) {

@@ -76,7 +76,9 @@ const MovieCardSmall = ({ data, media_type }: any) => {
           // style={!imageLoading ? { opacity: 1 } : { opacity: 0 }}
         />
       </div>
-      <p>{data?.title?.english || data?.name}</p>
+      <p>
+        {data?.title?.english || data?.title?.userPreferred || data?.native}
+      </p>
     </Link>
   );
 };

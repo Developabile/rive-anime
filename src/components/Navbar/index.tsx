@@ -78,30 +78,6 @@ const Navbar = ({ children }: any) => {
         )}
       </Link>
       <Link
-        href="/movie"
-        aria-label="Movies"
-        data-tooltip-id="tooltip"
-        data-tooltip-content="Movies"
-      >
-        {pathname === "/movie" ? (
-          <MdPlayCircle className={styles.active} />
-        ) : (
-          <MdOutlinePlayCircle className={styles.inactive} />
-        )}
-      </Link>
-      <Link
-        href="/tv"
-        aria-label="Tv shows"
-        data-tooltip-id="tooltip"
-        data-tooltip-content="TV shows"
-      >
-        {pathname === "/tv" ? (
-          <MdTv className={styles.active} />
-        ) : (
-          <MdOutlineTv className={styles.inactive} />
-        )}
-      </Link>
-      <Link
         href="/anime"
         aria-label="Anime"
         data-tooltip-id="tooltip"
@@ -112,31 +88,6 @@ const Navbar = ({ children }: any) => {
           <RiEye2Fill className={styles.active} />
         ) : (
           <RiEye2Line className={styles.inactive} />
-        )}
-      </Link>
-      <Link
-        href="/kdrama"
-        aria-label="K-Drama"
-        data-tooltip-id="tooltip"
-        data-tooltip-content="K-Drama"
-        className={styles.mobileHide}
-      >
-        {pathname === "/kdrama" ? (
-          <MdTheaterComedy className={styles.active} />
-        ) : (
-          <MdOutlineTheaterComedy className={styles.inactive} />
-        )}
-      </Link>
-      <Link
-        href="/collections"
-        aria-label="Collections"
-        data-tooltip-id="tooltip"
-        data-tooltip-content="Collections"
-      >
-        {pathname === "/collections" ? (
-          <MdCollectionsBookmark className={styles.active} />
-        ) : (
-          <MdOutlineCollectionsBookmark className={styles.inactive} />
         )}
       </Link>
       <Link

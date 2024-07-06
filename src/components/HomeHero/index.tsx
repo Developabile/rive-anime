@@ -72,7 +72,7 @@ const HomeHero = () => {
         setBookmarked(
           await checkBookmarks({
             userId: user,
-            type: data[index].media_type?.toLowerCase(),
+            type: data[index].type?.toLowerCase(),
             id: data[index].id,
           }),
         );
@@ -86,7 +86,7 @@ const HomeHero = () => {
 
     setBookmarks({
       userId: user,
-      type: data[index]?.media_type?.toLowerCase(),
+      type: data[index]?.type?.toLowerCase(),
       id: data[index].id,
     });
     setBookmarked(!bookmarked);
@@ -94,13 +94,13 @@ const HomeHero = () => {
   const handleBookmarkRemove = () => {
     removeBookmarks({
       userId: user,
-      type: data[index]?.media_type?.toLowerCase(),
+      type: data[index]?.type?.toLowerCase(),
       id: data[index].id,
     });
     setBookmarked(!bookmarked);
   };
   const handleShare = () => {
-    const url = `/detail?type=${data[index].media_type?.toLowerCase()}&id=${data[index].id}`;
+    const url = `/detail?type=${data[index].type?.toLowerCase()}&id=${data[index].id}`;
     navigatorShare({ text: data[index].title?.english, url: url });
   };
   return (
@@ -137,7 +137,7 @@ const HomeHero = () => {
           <div className={styles.HomeHeroMetaRow2}>
             <p className={styles.type}>
               {data[index] ? (
-                data[index].media_type?.toLowerCase() == "movie" ? (
+                data[index].type?.toLowerCase() == "movie" ? (
                   "MOVIE"
                 ) : (
                   "SHOW"
@@ -150,15 +150,15 @@ const HomeHero = () => {
               <>
                 <Link
                   className={styles.links}
-                  href={`${data[index]?.media_type?.toLowerCase() === "movie" ? `/watch?type=${data[index]?.media_type?.toLowerCase()}&id=${data[index]?.id}` : `/watch?type=${data[index]?.media_type?.toLowerCase()}&id=${data[index]?.id}&season=1&episode=1`}`}
+                  href={`https://youtube.com/watch?v=${data[index]?.trailer?.id}`}
                   data-tooltip-id="tooltip"
-                  data-tooltip-content="Watch Online"
+                  data-tooltip-content="Trailer"
                 >
-                  watch <FaPlay />
+                  trailer <FaPlay />
                 </Link>
                 <Link
                   className={styles.links}
-                  href={`/detail?type=${data[index]?.media_type?.toLowerCase()}&id=${data[index]?.id}`}
+                  href={`/detail?type=${data[index]?.type?.toLowerCase()}&id=${data[index]?.id}`}
                   data-tooltip-id="tooltip"
                   data-tooltip-content="Know More"
                 >
