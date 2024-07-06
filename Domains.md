@@ -1,11 +1,9 @@
 # Domains
 
-| Domain                         | Status |
-| ------------------------------ | ------ |
-| https://rivestream.live        | ✅     |
-| https://rivestream.vercel.app  | ✅     |
-| https://rivestream.netlify.app | ✅     |
-| https://rive-next.vercel.app   | ✅     |
+| Domain                        | Status |
+| ----------------------------- | ------ |
+| https://anime.rivestream.live | ✅     |
+| https://rivekun.netlify.app   | ✅     |
 
 **Legends**:
 
