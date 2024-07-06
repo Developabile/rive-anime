@@ -14,11 +14,11 @@ const MovieCardSmall = ({ data, media_type }: any) => {
   return (
     <Link
       key={data?.id}
-      href={`${media_type === "collection" ? `/collections/${data?.id}` : `/detail?type=${media_type}&id=${data?.id}`}`}
+      href={`/detail?type=${data?.type?.toLowerCase() === "movie" ? "movie" : "tv"}&id=${data?.id}`}
       className={styles.MovieCardSmall}
       aria-label={data?.name || "poster"}
       data-tooltip-id="tooltip"
-      data-tooltip-html={`${data?.title?.length > 30 || data?.name?.length > 30 ? data?.title || data?.name : ""}`}
+      data-tooltip-html={`${data?.title?.english?.length > 30 || data?.name?.length > 30 ? data?.title?.english || data?.name : ""}`}
     >
       {/* <img src={process.env.NEXT_PUBLIC_TMBD_IMAGE_URL + data.poster_path} alt="" /> */}
       <div
@@ -55,7 +55,7 @@ const MovieCardSmall = ({ data, media_type }: any) => {
         {/* react-lazy-load-image-component */}
         <LazyLoadImage
           key={data?.id}
-          src={`${imagePlaceholder ? "/images/logo.svg" : data?.poster_path !== null && data?.poster_path !== undefined ? process.env.NEXT_PUBLIC_TMBD_IMAGE_URL?.replace("/original", "/w185") + data?.poster_path : "/images/logo.svg"}`}
+          src={`${data?.image?.replace("/large/", "/medium/")}`}
           height="100%"
           width="100%"
           useIntersectionObserver={true}
@@ -76,7 +76,7 @@ const MovieCardSmall = ({ data, media_type }: any) => {
           // style={!imageLoading ? { opacity: 1 } : { opacity: 0 }}
         />
       </div>
-      <p>{data?.title || data?.name}</p>
+      <p>{data?.title?.english || data?.name}</p>
     </Link>
   );
 };

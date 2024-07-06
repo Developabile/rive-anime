@@ -38,11 +38,12 @@ const HomeHero = () => {
     setLoading(true);
     const fetchData = async () => {
       try {
-        const response = await axiosFetch({ requestID: "trending" });
+        const response = await axiosFetch({ requestID: "trendingAnime" });
+        console.log({ response });
         setData(response.results);
         let arr: any = [];
         response.results.map((ele: any) => {
-          arr.push(process.env.NEXT_PUBLIC_TMBD_IMAGE_URL + ele.backdrop_path);
+          arr.push(ele?.cover);
         });
         if (arr.length === 0) arr.push("/images/logo.svg");
         setImages(arr);
@@ -71,7 +72,7 @@ const HomeHero = () => {
         setBookmarked(
           await checkBookmarks({
             userId: user,
-            type: data[index].media_type,
+            type: data[index].media_type?.toLowerCase(),
             id: data[index].id,
           }),
         );
@@ -85,7 +86,7 @@ const HomeHero = () => {
 
     setBookmarks({
       userId: user,
-      type: data[index]?.media_type,
+      type: data[index]?.media_type?.toLowerCase(),
       id: data[index].id,
     });
     setBookmarked(!bookmarked);
@@ -93,14 +94,14 @@ const HomeHero = () => {
   const handleBookmarkRemove = () => {
     removeBookmarks({
       userId: user,
-      type: data[index]?.media_type,
+      type: data[index]?.media_type?.toLowerCase(),
       id: data[index].id,
     });
     setBookmarked(!bookmarked);
   };
   const handleShare = () => {
-    const url = `/detail?type=${data[index].media_type}&id=${data[index].id}`;
-    navigatorShare({ text: data[index].title, url: url });
+    const url = `/detail?type=${data[index].media_type?.toLowerCase()}&id=${data[index].id}`;
+    navigatorShare({ text: data[index].title?.english, url: url });
   };
   return (
     <div className={styles.HomeHero}>
@@ -124,15 +125,19 @@ const HomeHero = () => {
           <h1
             data-tooltip-id="tooltip"
             data-tooltip-content={
-              data[index]?.title || data[index]?.name || "name"
+              data[index]?.title?.english ||
+              data[index]?.name?.english ||
+              "name"
             }
           >
-            {data[index]?.title || data[index]?.name || <Skeleton />}
+            {data[index]?.title?.english || data[index]?.name?.english || (
+              <Skeleton />
+            )}
           </h1>
           <div className={styles.HomeHeroMetaRow2}>
             <p className={styles.type}>
               {data[index] ? (
-                data[index].media_type == "movie" ? (
+                data[index].media_type?.toLowerCase() == "movie" ? (
                   "MOVIE"
                 ) : (
                   "SHOW"
@@ -145,7 +150,7 @@ const HomeHero = () => {
               <>
                 <Link
                   className={styles.links}
-                  href={`${data[index]?.media_type === "movie" ? `/watch?type=${data[index]?.media_type}&id=${data[index]?.id}` : `/watch?type=${data[index]?.media_type}&id=${data[index]?.id}&season=1&episode=1`}`}
+                  href={`${data[index]?.media_type?.toLowerCase() === "movie" ? `/watch?type=${data[index]?.media_type?.toLowerCase()}&id=${data[index]?.id}` : `/watch?type=${data[index]?.media_type?.toLowerCase()}&id=${data[index]?.id}&season=1&episode=1`}`}
                   data-tooltip-id="tooltip"
                   data-tooltip-content="Watch Online"
                 >
@@ -153,7 +158,7 @@ const HomeHero = () => {
                 </Link>
                 <Link
                   className={styles.links}
-                  href={`/detail?type=${data[index]?.media_type}&id=${data[index]?.id}`}
+                  href={`/detail?type=${data[index]?.media_type?.toLowerCase()}&id=${data[index]?.id}`}
                   data-tooltip-id="tooltip"
                   data-tooltip-content="Know More"
                 >
