@@ -13,7 +13,7 @@ const SearchPage = ({ categoryType }: any) => {
   const [query, setQuery] = useState("");
   const [data, setData] = useState<any>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalpages, setTotalpages] = useState(1);
+  const [nextPagePresent, setNextPagePresent] = useState(false);
   const [loading, setLoading] = useState(true);
   const [genreListMovie, setGenreListMovie] = useState<any>([]);
   const [genreListTv, setGenreListTv] = useState<any>([]);
@@ -21,17 +21,6 @@ const SearchPage = ({ categoryType }: any) => {
   const searchBar: any = useRef(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const gM = await axiosFetch({ requestID: "genresMovie" });
-        const gT = await axiosFetch({ requestID: "genresTv" });
-        setGenreListMovie(gM.genres);
-        setGenreListTv(gT.genres);
-      } catch (error) {
-        console.error("Error fetching genres:", error);
-      }
-    };
-    fetchData();
     searchBar?.current.focus();
 
     // focus the input on "/"
@@ -59,7 +48,7 @@ const SearchPage = ({ categoryType }: any) => {
         let data;
         if (mode) {
           data = await axiosFetch({
-            requestID: `searchMulti`,
+            requestID: `search`,
             page: currentPage,
             query: query,
           });
@@ -71,11 +60,10 @@ const SearchPage = ({ categoryType }: any) => {
             setCurrentPage(1);
             return;
           }
-          setTotalpages(data.total_pages > 500 ? 500 : data.total_pages);
+          setNextPagePresent(data?.hasNextPage);
         } else {
-          data = await axiosFetch({ requestID: `trending` });
+          data = await axiosFetch({ requestID: `trendingAnime` });
           setCurrentPage(1);
-          setTotalpages(1);
         }
         setData(data.results);
         setLoading(false);
@@ -140,23 +128,21 @@ const SearchPage = ({ categoryType }: any) => {
         </h1>
       )}
       <div className={styles.movieList}>
-        {genreListMovie?.length > 0 &&
-          genreListTv?.length > 0 &&
-          data.map((ele: any) => {
-            return (
-              <MovieCardLarge
-                data={ele}
-                media_type={categoryType}
-                genresMovie={genreListMovie}
-                genresTv={genreListTv}
-              />
-            );
-          })}
+        {data?.map((ele: any) => {
+          return (
+            <MovieCardLarge
+              data={ele}
+              media_type={categoryType}
+              genresMovie={genreListMovie}
+              genresTv={genreListTv}
+            />
+          );
+        })}
         {query.length > 2 && data?.length === 0 ? <h1>No Data Found</h1> : null}
         {query.length > 2 && data === undefined
           ? dummyList.map((ele) => <Skeleton className={styles.loading} />)
           : null}
-        {genreListMovie?.length === 0 || genreListTv?.length === 0
+        {data === undefined
           ? dummyList.map((ele: any) => {
               return (
                 <MovieCardLarge
@@ -176,13 +162,10 @@ const SearchPage = ({ categoryType }: any) => {
         onPageChange={(event) => {
           setCurrentPage(event.selected + 1);
           console.log({ event });
-          if (currentPage > totalpages) {
-            setCurrentPage(totalpages);
-          }
           window.scrollTo(0, 0);
         }}
         forcePage={currentPage - 1}
-        pageCount={totalpages}
+        pageCount={nextPagePresent ? currentPage + 1 : currentPage}
         breakLabel=" ... "
         previousLabel={<AiFillLeftCircle className={styles.paginationIcons} />}
         nextLabel={<AiFillRightCircle className={styles.paginationIcons} />}

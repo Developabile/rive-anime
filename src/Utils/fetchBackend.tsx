@@ -45,7 +45,7 @@ export default async function axiosFetch({
 
     episodeStreamingLinks: `${baseURL}?requestID=episodeStreamingLinks&id=${id}`,
 
-    search: `${baseURL}?requestID=search&${query}&page=${page}`,
+    search: `${baseURL}?requestID=search&query=${query}&page=${page}`,
     advancedSearch: `${baseURL}?requestID=advancedSearch${query != undefined ? "&query=" + query : ""}&page=${page}&perPage=${perPage}${season != undefined ? "&season=" + season : ""}${format != undefined ? "&format=" + format : ""}${sortBy != undefined ? "&sort=" + sortBy : ""}${genreKeywords != undefined ? "&genres=" + genreKeywords : ""}${id != undefined ? "&id=" + id : ""}${year != undefined ? "&year=" + year : ""}${animeStatus != undefined ? "&status=" + animeStatus : ""}`,
   };
   const final_request = requests[request];

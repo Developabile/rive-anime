@@ -20,15 +20,15 @@ const MovieCardSmall = ({ data, media_type }: any) => {
       data-tooltip-id="tooltip"
       data-tooltip-html={`${data?.title?.english?.length > 30 || data?.name?.length > 30 ? data?.title?.english || data?.name : ""}`}
     >
-      {/* <img src={process.env.NEXT_PUBLIC_TMBD_IMAGE_URL + data.poster_path} alt="" /> */}
+      {/* <img src={process.env.NEXT_PUBLIC_TMBD_IMAGE_URL + data.image} alt="" /> */}
       <div
-        className={`${styles.img} ${data?.poster_path !== null && data?.poster_path !== undefined ? "skeleton" : null}`}
+        className={`${styles.img} ${data?.image !== null && data?.image !== undefined ? "skeleton" : null}`}
       >
         {/* if rllic package is not available, then start using this code again, and comment/delete the rllic code */}
         {/* <AnimatePresence mode="sync">
           <motion.img
             key={data?.id}
-            src={`${imagePlaceholder ? "/images/logo.svg" : data?.poster_path !== null && data?.poster_path !== undefined ? process.env.NEXT_PUBLIC_TMBD_IMAGE_URL + data?.poster_path : "/images/logo.svg"}`}
+            src={`${imagePlaceholder ? "/images/logo.svg" : data?.image !== null && data?.image !== undefined ? process.env.NEXT_PUBLIC_TMBD_IMAGE_URL + data?.image : "/images/logo.svg"}`}
             initial={{ opacity: 0 }}
             animate={{
               opacity: imageLoading ? 0 : 1,

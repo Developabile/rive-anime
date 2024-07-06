@@ -22,22 +22,6 @@ const MovieCardLarge = ({ data, media_type, genresMovie, genresTv }: any) => {
   const year = new Date(data?.release_date).getFullYear();
   const lang = data?.original_language;
   let Genres: Array<string> = [];
-  data?.genre_ids?.map((ele: number) => {
-    if (data?.media_type === "movie" || media_type === "movie") {
-      genreListMovie?.map((val: any) => {
-        if (val?.id === ele) {
-          Genres.push(val?.name);
-        }
-      });
-    } else if (data?.media_type === "tv" || media_type === "tv") {
-      genreListTv?.map((val: any) => {
-        if (val?.id === ele) {
-          Genres.push(val?.name);
-        }
-      });
-    }
-  });
-  console.log({ Genres });
 
   // useEffect(() => {
   //   const fetchData = async () => {
@@ -55,20 +39,20 @@ const MovieCardLarge = ({ data, media_type, genresMovie, genresTv }: any) => {
   return (
     <Link
       key={data?.id}
-      href={`${data?.media_type === "person" ? "/person?id=" + data?.id : "/detail?type=" + (data?.media_type || media_type) + "&id=" + data?.id}`}
+      href={`/detail?type=${data?.type?.toLowerCase() === "movie" ? "movie" : "tv"}&id=${data?.id}`}
       className={styles.MovieCardSmall}
       aria-label={data?.name || "poster"}
       data-tooltip-id="tooltip"
-      data-tooltip-html={`${data?.title?.length > 50 || data?.name?.length > 50 ? data?.title || data?.name : ""}`}
+      data-tooltip-html={`${data?.title?.english?.length > 30 || data?.name?.length > 30 ? data?.title?.english || data?.name : ""}`}
     >
       <div
-        className={`${styles.img} ${data?.poster_path !== null && data?.poster_path !== undefined ? "skeleton" : null}`}
+        className={`${styles.img} ${data?.image !== null && data?.image !== undefined ? "skeleton" : null}`}
       >
         {/* if rllic package is not available, then start using this code again, and comment/delete the rllic code */}
         {/* <AnimatePresence mode="sync">
           <motion.img
             key={data?.id}
-            src={`${imagePlaceholder ? "/images/logo.svg" : (data?.poster_path !== null && data?.poster_path !== undefined) || (data?.profile_path !== null && data?.profile_path !== undefined) || (data?.still_path !== null && data?.still_path !== undefined) ? process.env.NEXT_PUBLIC_TMBD_IMAGE_URL + (data?.poster_path || data?.profile_path || data?.still_path) || null : "/images/logo.svg"}`}
+            src={`${imagePlaceholder ? "/images/logo.svg" : (data?.image !== null && data?.image !== undefined) || (data?.profile_path !== null && data?.profile_path !== undefined) || (data?.still_path !== null && data?.still_path !== undefined) ? process.env.NEXT_PUBLIC_TMBD_IMAGE_URL + (data?.image || data?.profile_path || data?.still_path) || null : "/images/logo.svg"}`}
             initial={{ opacity: 0 }}
             animate={{
               opacity: imageLoading ? 0 : 1,
@@ -96,7 +80,7 @@ const MovieCardLarge = ({ data, media_type, genresMovie, genresTv }: any) => {
         {/* react-lazy-load-image-component */}
         <LazyLoadImage
           key={data?.id}
-          src={`${imagePlaceholder ? "/images/logo.svg" : (data?.poster_path !== null && data?.poster_path !== undefined) || (data?.profile_path !== null && data?.profile_path !== undefined) || (data?.still_path !== null && data?.still_path !== undefined) ? process.env.NEXT_PUBLIC_TMBD_IMAGE_URL?.replace("/original", "/w185") + (data?.poster_path || data?.profile_path || data?.still_path) || null : "/images/logo.svg"}`}
+          src={`${data?.image?.replace("/large/", "/medium/")}`}
           height="100%"
           width="100%"
           useIntersectionObserver={true}
@@ -119,14 +103,20 @@ const MovieCardLarge = ({ data, media_type, genresMovie, genresTv }: any) => {
         />
       </div>
       <div className={`${styles.metaData}`}>
-        <h1>{data?.title || data?.name || <Skeleton count={2} />}</h1>
+        <h1>
+          {data?.title?.english || data?.title?.userPreferred || (
+            <Skeleton count={2} />
+          )}
+        </h1>
         <p>
-          {capitalizeFirstLetter(data?.media_type || media_type)}
-          {data?.vote_average ? ` • ${data?.vote_average.toFixed(1)}` : null}
-          {!Number.isNaN(year) ? ` • ${year}` : null}{" "}
-          {lang !== undefined ? ` • ${lang.toUpperCase()}` : null}
+          {capitalizeFirstLetter(data?.type?.toLowerCase() || media_type)}
+          {data?.rating ? ` • ${data?.rating.toFixed(0)}%` : null}
+          {!Number.isNaN(data?.releaseDate)
+            ? ` • ${data?.releaseDate}`
+            : null}{" "}
+          {data?.status !== undefined ? ` • ${data?.status}` : null}
         </p>
-        {Genres?.join(
+        {data?.genres?.join(
           ", ",
         ) // || <Skeleton />
         }
