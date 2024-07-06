@@ -55,19 +55,6 @@ const WatchDetails = ({
     "November",
     "December",
   ];
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const gM = await axiosFetch({ requestID: "genresMovie" });
-        const gT = await axiosFetch({ requestID: "genresTv" });
-        setGenreListMovie(gM.genres);
-        setGenreListTv(gT.genres);
-      } catch (error) {
-        console.error("Error fetching genres:", error);
-      }
-    };
-    fetchData();
-  }, []);
 
   useEffect(() => {
     setLoading(true);
@@ -76,31 +63,10 @@ const WatchDetails = ({
       if (category !== "overview") {
         try {
           let res;
-          if (category === "episodes") {
-            res = await axiosFetch({
-              requestID: `${type}${CapitalCategoryType}`,
-              id: id,
-              season: selectedSeason,
-            });
-          } else if (category === "crew" || category === "guests") {
-            res = await axiosFetch({
-              requestID: `tvEpisodeDetail`,
-              id: id,
-              season: season,
-              episode: episode,
-              page: currentPage,
-            });
-          } else {
-            res = await axiosFetch({
-              requestID: `${type}${CapitalCategoryType}`,
-              id: id,
-              page: currentPage,
-            });
-            if (res.page > res.total_pages) {
-              setCurrentPage(res.total_pages);
-            }
-            setTotalpages(res.total_pages > 500 ? 500 : res.total_pages);
-          }
+          res = await axiosFetch({
+            requestID: `infoAnime`,
+            id: season,
+          });
           setCategoryData(res);
           setLoading(false);
         } catch (error) {
@@ -125,160 +91,39 @@ const WatchDetails = ({
       </p>
       <div className={styles.MetaDetails} ref={watchDetailsPage}>
         <div className={styles.category}>
-          {type === "tv" ? (
-            <>
-              <p
-                className={`${category === "episodes" ? styles.active : styles.inactive}`}
-                onClick={() => setCategory("episodes")}
-              >
-                Episodes
-              </p>
-              <p
-                className={`${category === "crew" ? styles.active : styles.inactive}`}
-                onClick={() => setCategory("crew")}
-              >
-                Crew
-              </p>
-              <p
-                className={`${category === "guests" ? styles.active : styles.inactive}`}
-                onClick={() => setCategory("guests")}
-              >
-                Guests
-              </p>
-            </>
-          ) : (
-            <>
-              <p
-                className={`${category === "related" ? styles.active : styles.inactive}`}
-                onClick={() => setCategory("related")}
-              >
-                Related
-              </p>
-              <p
-                className={`${category === "similar" ? styles.active : styles.inactive}`}
-                onClick={() => setCategory("similar")}
-              >
-                Similar
-              </p>
-            </>
-          )}
+          <>
+            <p
+              className={`${category === "episodes" ? styles.active : styles.inactive}`}
+              onClick={() => setCategory("episodes")}
+            >
+              Episodes
+            </p>
+            <p
+              className={`${category === "related" ? styles.active : styles.inactive}`}
+              onClick={() => setCategory("related")}
+            >
+              Related
+            </p>
+          </>
         </div>
 
         {type === "tv" && category === "episodes" ? (
           <div className={styles.EpisodeList}>
-            <select
-              name="season"
-              id="season"
-              value={selectedSeason}
-              onChange={(e: any) => setSelectedSeason(e.target.value)}
-            >
-              {data?.seasons?.map((ele: any, i: number) => {
-                console.log({ i });
-                return (
-                  <option
-                    key={ele.id}
-                    value={ele?.season_number}
-                    selected={i == 0}
-                  >
-                    {ele.name} {` (${ele.episode_count})`}
-                  </option>
-                );
-              })}
-            </select>
             {category === "episodes" &&
               categoryData?.episodes?.map((ele: any) => {
                 return (
-                  <div
-                    className={`${styles.episode} ${reviewDetail === ele?.id ? styles.ReviewDetail : null} ${parseInt(selectedSeason) === parseInt(season) && parseInt(ele?.episode_number) === parseInt(episode) ? styles.highlightEpisode : null} ${new Date(ele?.air_date) >= new Date() ? styles.notAired : null}`}
-                    onClick={(e) =>
-                      setReviewDetail((prev: any) =>
-                        prev !== ele?.id ? ele?.id : "",
-                      )
-                    }
-                    key={ele?.id}
+                  <Link
+                    href={`/watch?type=tv&id=${ele?.id}&season=${season}&episode=${ele?.number}`}
+                    className={`${styles.episode} ${parseInt(ele?.number) === parseInt(episode) ? styles.highlightEpisode : null}`}
+                    onClick={(e) => e.stopPropagation()}
                   >
                     <div className={styles.episodeHeader}>
-                      <Link
-                        href={`/watch?type=tv&id=${ele?.show_id}&season=${ele?.season_number}&episode=${ele?.episode_number}`}
-                        className={styles.CardSmall}
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        <div
-                          className={`${styles.img} ${imageLoading ? "skeleton" : null}`}
-                        >
-                          {/* if rllic package is not available, then start using this code again, and comment/delete the rllic code */}
-                          {/* <AnimatePresence mode="sync">
-                          <motion.img
-                            key={ele?.id}
-                            src={`${ele?.still_path !== null && ele?.still_path !== undefined ? process.env.NEXT_PUBLIC_TMBD_IMAGE_URL + ele?.still_path : "/images/logo.svg"}`}
-                            initial={{ opacity: 0 }}
-                            animate={{
-                              opacity: imageLoading ? 0 : 1,
-                            }}
-                            height="100%"
-                            width="100%"
-                            exit="exit"
-                            className={`${styles.img} ${imageLoading ? "skeleton" : null}`}
-                            onLoad={() => {
-                              setImageLoading(false);
-                            }}
-                            loading="lazy"
-                            // style={!imageLoading ? { opacity: 1 } : { opacity: 0 }}
-                          />
-                        </AnimatePresence> */}
-
-                          {/* react-lazy-load-image-component */}
-                          <LazyLoadImage
-                            key={ele?.id}
-                            src={`${imagePlaceholder ? "/images/logo.svg" : ele?.still_path !== null && ele?.still_path !== undefined ? process.env.NEXT_PUBLIC_TMBD_IMAGE_URL?.replace("/original", "/w342") + ele?.still_path : "/images/logo.svg"}`}
-                            height="100%"
-                            width="100%"
-                            useIntersectionObserver={true}
-                            effect="opacity"
-                            className={`${styles.img} ${imageLoading ? "skeleton" : null}`}
-                            onLoad={() => {
-                              setImageLoading(false);
-                            }}
-                            onError={(e) => {
-                              // console.log({ e });
-                              setImagePlaceholder(true);
-                              setImageLoading(false);
-                            }}
-                            loading="lazy"
-                            // style={!imageLoading ? { opacity: 1 } : { opacity: 0 }}
-                          />
-                        </div>
-                      </Link>
-                      <div className={styles.details}>
-                        <h4>
-                          {`EP ${ele.episode_number}`}
-                          {`${ele?.name ? " : " + ele?.name : null}`}
-                        </h4>
-                        <p>
-                          {`${ele?.vote_average >= 0 ? "• " + ele?.vote_average.toFixed(1) : null}`}{" "}
-                          {ele?.runtime >= 60
-                            ? `• ${Math.floor(ele?.runtime / 60)}hr ${(ele?.runtime % 60).toFixed(0)}min`
-                            : null}
-                          {ele?.runtime < 60
-                            ? `• ${(ele?.runtime % 60).toFixed(0)}min`
-                            : null}
-                          {new Date(ele?.air_date) >= new Date() ? (
-                            <span
-                              className={styles.notAiredTag}
-                            >{`• ${new Date(ele?.air_date).getDate()} ${monthNames[new Date(ele?.air_date).getMonth()]} ${new Date(ele?.air_date).getFullYear()}`}</span>
-                          ) : null}
-                        </p>
-                        <Link
-                          className={`${styles.links} btn`}
-                          href={`/watch?type=tv&id=${ele?.show_id}&season=${ele?.season_number}&episode=${ele?.episode_number}`}
-                          onClick={(e) => e.stopPropagation()}
-                        >
-                          watch <FaPlay />
-                        </Link>
-                      </div>
+                      <h4>
+                        {/* {`EP ${ele.number}`} */}
+                        {`${ele?.title ? ele?.title : ele?.number}`}
+                      </h4>
                     </div>
-                    <p>{ele?.overview}</p>
-                  </div>
+                  </Link>
                 );
               })}
           </div>
@@ -298,187 +143,27 @@ const WatchDetails = ({
             ))
           : null}
         <div className={styles.categoryDetails}>
-          <div className={styles.casts}>
-            {category === "crew" && (
-              <>
-                <div className={styles.header}>
-                  <h4>{`S${season}E${episode}`}</h4>
-                  {categoryData?.crew?.length !== 0 ? (
-                    <p>crew of this episode</p>
-                  ) : (
-                    <p>No crew found</p>
-                  )}
-                </div>
-                {categoryData?.crew?.map((ele: any) => (
-                  <div className={styles.cast} key={ele?.id}>
-                    <Link
-                      href={`/person?id=${ele?.id}`}
-                      className={styles.CardSmall}
-                    >
-                      <div
-                        className={`${styles.img} ${imageLoading ? "skeleton" : null}`}
-                      >
-                        {/* if rllic package is not available, then start using this code again, and comment/delete the rllic code */}
-                        {/* <AnimatePresence mode="sync">
-                          <motion.img
-                            key={ele?.id}
-                            src={`${ele?.profile_path !== null && ele?.profile_path !== undefined ? process.env.NEXT_PUBLIC_TMBD_IMAGE_URL + ele?.profile_path : "/images/logo.svg"}`}
-                            initial={{ opacity: 0 }}
-                            animate={{
-                              opacity: imageLoading ? 0 : 1,
-                            }}
-                            height="100%"
-                            width="100%"
-                            exit="exit"
-                            className={`${styles.img} ${imageLoading ? "skeleton" : null}`}
-                            onLoad={() => {
-                              setImageLoading(false);
-                            }}
-                            loading="lazy"
-                          // style={!imageLoading ? { opacity: 1 } : { opacity: 0 }}
-                          />
-                        </AnimatePresence> */}
-
-                        {/* react-lazy-load-image-component */}
-                        <LazyLoadImage
-                          key={ele?.id}
-                          src={`${imagePlaceholder ? "/images/logo.svg" : ele?.profile_path !== null && ele?.profile_path !== undefined ? process.env.NEXT_PUBLIC_TMBD_IMAGE_URL?.replace("/original", "/w185") + ele?.profile_path : "/images/logo.svg"}`}
-                          height="100%"
-                          width="100%"
-                          useIntersectionObserver={true}
-                          effect="opacity"
-                          className={`${styles.img} ${imageLoading ? "skeleton" : null}`}
-                          onLoad={() => {
-                            setImageLoading(false);
-                          }}
-                          onError={(e) => {
-                            // console.log({ e });
-                            setImagePlaceholder(true);
-                            setImageLoading(false);
-                          }}
-                          loading="lazy"
-                          // style={!imageLoading ? { opacity: 1 } : { opacity: 0 }}
-                        />
-                      </div>
-                    </Link>
-                    <div className={styles.castName}>
-                      <h4>{ele?.name}</h4>
-                      <p>{ele?.character || ele?.job}</p>
-                    </div>
-                  </div>
-                ))}
-              </>
-            )}
-            {category === "crew" &&
-              categoryData === undefined &&
-              dummyList.map((ele) => (
-                <div className={styles.cast}>
-                  <Skeleton height={100} width={100} />
-                  <Skeleton height={20} width={50} />
-                </div>
-              ))}
-          </div>
-          <div className={styles.casts}>
-            {category === "guests" && (
-              <>
-                <div className={styles.header}>
-                  <h4>{`S${season}E${episode}`}</h4>
-                  {categoryData?.guest_stars?.length !== 0 ? (
-                    <p>guest stars in this episode</p>
-                  ) : (
-                    <p>No notable guest star in this episode </p>
-                  )}
-                </div>
-                {categoryData?.guest_stars?.map((ele: any) => (
-                  <div className={styles.cast} key={ele?.id}>
-                    <Link
-                      href={`/person?id=${ele?.id}`}
-                      className={styles.CardSmall}
-                    >
-                      <div
-                        className={`${styles.img} ${imageLoading ? "skeleton" : null}`}
-                      >
-                        {/* if rllic package is not available, then start using this code again, and comment/delete the rllic code */}
-                        {/* <AnimatePresence mode="sync">
-                          <motion.img
-                            key={ele?.id}
-                            src={`${ele?.profile_path !== null && ele?.profile_path !== undefined ? process.env.NEXT_PUBLIC_TMBD_IMAGE_URL + ele?.profile_path : "/images/logo.svg"}`}
-                            initial={{ opacity: 0 }}
-                            animate={{
-                              opacity: imageLoading ? 0 : 1,
-                            }}
-                            height="100%"
-                            width="100%"
-                            exit="exit"
-                            className={`${styles.img} ${imageLoading ? "skeleton" : null}`}
-                            onLoad={() => {
-                              setImageLoading(false);
-                            }}
-                            loading="lazy"
-                          // style={!imageLoading ? { opacity: 1 } : { opacity: 0 }}
-                          />
-                        </AnimatePresence> */}
-
-                        {/* react-lazy-load-image-component */}
-                        <LazyLoadImage
-                          key={ele?.id}
-                          src={`${imagePlaceholder ? "/images/logo.svg" : ele?.profile_path !== null && ele?.profile_path !== undefined ? process.env.NEXT_PUBLIC_TMBD_IMAGE_URL?.replace("/original", "/w185") + ele?.profile_path : "/images/logo.svg"}`}
-                          height="100%"
-                          width="100%"
-                          useIntersectionObserver={true}
-                          effect="opacity"
-                          className={`${styles.img} ${imageLoading ? "skeleton" : null}`}
-                          onLoad={() => {
-                            setImageLoading(false);
-                          }}
-                          onError={(e) => {
-                            // console.log({ e });
-                            setImagePlaceholder(true);
-                            setImageLoading(false);
-                          }}
-                          loading="lazy"
-                          // style={!imageLoading ? { opacity: 1 } : { opacity: 0 }}
-                        />
-                      </div>
-                    </Link>
-                    <div className={styles.castName}>
-                      <h4>{ele?.name}</h4>
-                      <p>{ele?.character || ele?.job}</p>
-                    </div>
-                  </div>
-                ))}
-              </>
-            )}
-            {category === "guests" &&
-              categoryData === undefined &&
-              dummyList.map((ele) => (
-                <div className={styles.cast}>
-                  <Skeleton height={100} width={100} />
-                  <Skeleton height={20} width={50} />
-                </div>
-              ))}
-            {/* {category === "guests" &&
-              categoryData?.guest_stars?.length === 0 && (
-                <p>No notable guest star in this episode </p>
-              )} */}
-          </div>
           <div className={styles.MovieList}>
             <>
               {category === "related" &&
-                categoryData?.results?.map((ele: any) => {
+                categoryData?.recommendations?.map((ele: any, ind: any) => {
                   return (
-                    <MovieCardLarge
-                      data={ele}
-                      media_type={type}
-                      genresMovie={genreListMovie}
-                      genresTv={genreListTv}
-                    />
+                    <div className={styles.numberedCard}>
+                      <MovieCardLarge
+                        data={ele}
+                        media_type={type}
+                        genresMovie={genreListMovie}
+                        genresTv={genreListTv}
+                      />
+                      <span className={styles.number}>{ind + 1}</span>
+                    </div>
                   );
                 })}
             </>
-            {category === "related" && categoryData?.results?.length === 0 && (
-              <p>No Recommendations</p>
-            )}
+            {category === "related" &&
+              categoryData?.recommendations?.length === 0 && (
+                <p>No Recommendations</p>
+              )}
             {category === "related" &&
               categoryData === undefined &&
               dummyList.map((ele) => (

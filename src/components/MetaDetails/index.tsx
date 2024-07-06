@@ -257,7 +257,7 @@ const MetaDetails = ({ id, type, data }: any) => {
                   );
                 })}
             </>
-            {category === "related" && data?.results?.length === 0 && (
+            {category === "related" && data?.recommendations?.length === 0 && (
               <p>No Recommendations</p>
             )}
             {category === "related" &&

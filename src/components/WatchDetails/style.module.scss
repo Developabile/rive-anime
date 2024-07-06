@@ -20,11 +20,12 @@
     background: var(--primary-1);
     padding: 1rem;
     overflow: auto;
+    overflow-x: hidden;
     position: relative;
     padding-top: 0;
     .category {
       display: flex;
-      width: 100%;
+      width: calc(100% + 2rem);
       justify-content: space-around;
       align-items: center;
       flex-wrap: wrap;
@@ -32,11 +33,12 @@
       // margin: 1rem 0;
       position: sticky;
       top: 0;
-      left: 0;
+      left: -1rem;
       background: var(--primary-1);
       padding: 1rem 0;
       margin-bottom: 1rem;
       border-bottom: 1px solid var(--primary-2);
+      z-index: 2;
     }
     h3,
     h4 {
@@ -87,6 +89,7 @@
       display: flex;
       gap: 1rem;
       flex-wrap: wrap;
+      padding: 1rem;
       .Review {
         padding: 1rem;
         background: var(--bg-color);
@@ -107,9 +110,22 @@
         height: unset;
         max-height: unset !important;
       }
+
+      .numberedCard {
+        position: relative;
+        .number {
+          padding: 0.5rem;
+          position: absolute;
+          background: var(--bg-color);
+          color: var(--primary-2);
+          border-radius: 0rem 0rem 0.3rem 0.3rem;
+          top: 0;
+          left: 0.5rem;
+        }
+      }
     }
     .EpisodeList {
-      gap: 0.1rem;
+      gap: 1rem;
       select {
         width: clamp(15rem, 50vw, 20rem);
         padding: 1rem 2rem;
@@ -129,7 +145,7 @@
         justify-content: flex-start;
         align-items: flex-start;
         flex-direction: column;
-        margin: 1rem 0;
+        // margin: 1rem 0;
         padding: 1rem;
         background: var(--bg-color);
         max-height: 12rem;
@@ -246,7 +262,7 @@
   cursor: pointer;
   top: 0.5rem;
   right: 0.5rem;
-  z-index: 2;
+  z-index: 3;
 }
 
 @media (max-width: 769px) {
@@ -291,7 +307,7 @@
     .EpisodeList {
       .episode {
         // display: flex !important;
-        height: 5rem;
+        // height: 5rem;
         .img,
         .CardSmall {
           display: none;

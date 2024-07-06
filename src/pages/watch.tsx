@@ -47,6 +47,7 @@ const Watch = () => {
     setEpisode(params.get("episode"));
 
   useEffect(() => {
+    setNonEmbedSourcesIndex("");
     if (
       localStorage.getItem("RiveStreamEmbedMode") !== undefined &&
       localStorage.getItem("RiveStreamEmbedMode") !== null
@@ -316,8 +317,8 @@ const Watch = () => {
           scrolling="no"
           src={
             type === "movie"
-              ? `${STREAM_URL_PRO}/embed/anilist/${season}?audio=sub&autoplay=0&theme=F52E8E`
-              : `${STREAM_URL_PRO}/embed/anilist/${season}/${episode}?audio=sub&autoplay=0&theme=F52E8E`
+              ? `${STREAM_URL_PRO}/embed/anilist/${season}?audio=sub&autoplay=0&theme=00c1db`
+              : `${STREAM_URL_PRO}/embed/anilist/${season}/${episode}?audio=sub&autoplay=0&theme=00c1db`
           }
           className={styles.iframe}
           allowFullScreen
