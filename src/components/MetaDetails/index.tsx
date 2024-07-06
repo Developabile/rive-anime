@@ -48,52 +48,6 @@ const MetaDetails = ({ id, type, data }: any) => {
     "December",
   ];
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const gM = await axiosFetch({ requestID: "genresMovie" });
-  //       const gT = await axiosFetch({ requestID: "genresTv" });
-  //       setGenreListMovie(gM.genres);
-  //       setGenreListTv(gT.genres);
-  //     } catch (error) {
-  //       console.error("Error fetching genres:", error);
-  //     }
-  //   };
-  //   fetchData();
-  // }, []);
-
-  // useEffect(() => {
-  //   setLoading(true);
-  //   const fetchData = async () => {
-  //     const CapitalCategoryType = capitalizeFirstLetter(category);
-  //     if (category !== "description") {
-  //       try {
-  //         let res;
-  //         if (category === "episodes") {
-  //           res = await axiosFetch({
-  //             requestID: `${type}${CapitalCategoryType}`,
-  //             id: id,
-  //             season: selectedSeason,
-  //           });
-  //         } else {
-  //           res = await axiosFetch({
-  //             requestID: `${type}${CapitalCategoryType}`,
-  //             id: id,
-  //             page: currentPage,
-  //           });
-  //           setCurrentPage(res?.page);
-  //           setTotalpages(res?.total_pages);
-  //         }
-  //         setdata(res);
-  //         setLoading(false);
-  //       } catch (error) {
-  //         console.error("Error fetching data:", error);
-  //       }
-  //     }
-  //   };
-  //   fetchData();
-  // }, [category, selectedSeason, currentPage]);
-
   const scrollToTop = () => {
     metaDetailsPage?.current?.scrollTo(0, 0);
   };
@@ -129,7 +83,7 @@ const MetaDetails = ({ id, type, data }: any) => {
               data?.episodes?.map((ele: any) => {
                 return (
                   <Link
-                    href={`/watch?type=tv&id=${ele?.id}&episode=${ele?.number}`}
+                    href={`/watch?type=tv&id=${ele?.id}&season=${id}&episode=${ele?.number}`}
                     className={`${styles.episode}`}
                     onClick={(e) => e.stopPropagation()}
                   >

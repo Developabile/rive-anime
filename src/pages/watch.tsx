@@ -26,7 +26,7 @@ const Watch = () => {
   const [watchDetails, setWatchDetails] = useState(false);
   const [data, setdata] = useState<any>();
   const [seasondata, setseasonData] = useState<any>();
-  const [source, setSource] = useState("SUP");
+  const [source, setSource] = useState("PRO");
   const [embedMode, setEmbedMode] = useState<any>();
   // const [nonEmbedURL, setNonEmbedURL] = useState<any>("");
   const [nonEmbedSourcesIndex, setNonEmbedSourcesIndex] = useState<any>("");
@@ -63,58 +63,6 @@ const Watch = () => {
     setSeason(params.get("season"));
     setEpisode(params.get("episode"));
     setContinueWatching({ type: params.get("type"), id: params.get("id") });
-    const fetch = async () => {
-      const res: any = await axiosFetch({ requestID: `${type}Data`, id: id });
-      setdata(res);
-      setMaxSeason(res?.number_of_seasons);
-      const seasonData = await axiosFetch({
-        requestID: `tvEpisodes`,
-        id: id,
-        season: season,
-      });
-      setseasonData(seasonData);
-      seasonData?.episodes?.length > 0 &&
-        setMaxEpisodes(
-          seasonData?.episodes[seasonData?.episodes?.length - 1]
-            ?.episode_number,
-        );
-      setMinEpisodes(seasonData?.episodes[0]?.episode_number);
-      if (parseInt(episode) >= maxEpisodes - 1) {
-        var nextseasonData = await axiosFetch({
-          requestID: `tvEpisodes`,
-          id: id,
-          season: parseInt(season) + 1,
-        });
-        nextseasonData?.episodes?.length > 0 &&
-          setNextSeasonMinEpisodes(nextseasonData?.episodes[0]?.episode_number);
-      }
-    };
-    if (type === "tv") fetch();
-
-    const handleKeyDown = (event: any) => {
-      if (event.shiftKey && event.key === "N") {
-        event.preventDefault();
-        nextBtn?.current.click();
-        // handleForward();
-        // console.log("next");
-      } else if (event.shiftKey && event.key === "P") {
-        event.preventDefault();
-        backBtn?.current.click();
-        // handleBackward();
-        // console.log("prev");
-      } else if (event.shiftKey && event.key === "M") {
-        event.preventDefault();
-        moreBtn?.current.click();
-      }
-    };
-
-    // Add event listener when component mounts
-    window.addEventListener("keydown", handleKeyDown);
-
-    // Remove event listener when component unmounts
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
   }, [params, id, season, episode]);
 
   useEffect(() => {
@@ -171,92 +119,17 @@ const Watch = () => {
       const fetch = async () => {
         setNonEmbedSourcesNotFound(false);
         const providers: any = await axiosFetch({
-          requestID: `VideoProviderServices`,
+          requestID: `episodeStreamingLinks`,
+          id: id,
         });
-        // console.log({ providers });
-        setNonEmbedVideoProviders(
-          providers?.data?.map((ele: any) => {
-            return {
-              name: ele,
-              status: "available",
-            };
-          }),
-        );
-        const res: any = { sources: [], captions: [] };
-        // setNonEmbedSources([]);
-        // setnonEmbedCaptions([]);
-        for (const ele of providers?.data || []) {
-          setNonEmbedVideoProviders((prevProviders: any) =>
-            prevProviders.map((provider: any) => {
-              if (provider.name === ele) {
-                return {
-                  ...provider,
-                  status: "fetching",
-                };
-              }
-              return provider;
-            }),
-          );
-          try {
-            const tempRes: any = await axiosFetch({
-              requestID: `${type}VideoProvider`,
-              id: id,
-              season: season,
-              episode: episode,
-              service: ele,
-            });
-            console.log({ tempRes });
-
-            tempRes?.data?.sources?.forEach((source: any) => {
-              res.sources.push(source);
-            });
-            tempRes?.data?.captions?.forEach((caption: any) => {
-              res.captions.push(caption);
-            });
-
-            setNonEmbedVideoProviders((prevProviders: any) =>
-              prevProviders.map((provider: any) => {
-                if (provider.name === ele) {
-                  return {
-                    ...provider,
-                    status:
-                      tempRes?.data?.sources?.length > 0 ? "success" : "error",
-                  };
-                }
-                return provider;
-              }),
-            );
-            if (tempRes?.data?.sources?.length > 0) {
-              setNonEmbedSources((prev: any) => {
-                return [...prev, ...tempRes?.data?.sources];
-              });
-              tempRes?.data?.sources?.length > 0
-                ? setNonEmbedSourcesIndex(0)
-                : null;
-              setnonEmbedCaptions((prev: any) => {
-                const captions = Array.isArray(tempRes?.data?.captions)
-                  ? tempRes?.data?.captions
-                  : [];
-                return [...prev, ...captions];
-              });
-              clearTimeout(autoEmbedMode);
-              setNonEmbedSourcesNotFound(false);
-            }
-          } catch (error) {
-            console.error(`Error fetching data for provider ${ele}:`, error);
-            setNonEmbedVideoProviders((prevProviders: any) =>
-              prevProviders.map((provider: any) => {
-                if (provider.name === ele) {
-                  return {
-                    ...provider,
-                    status: "error",
-                  };
-                }
-                return provider;
-              }),
-            );
-          }
-        }
+        console.log({ providers });
+        providers?.sources?.map((ele: any) => {
+          return {
+            ...ele,
+            format: ele?.isM3U8 ? "hls" : "mp4",
+          };
+        });
+        const res = providers;
         console.log({ res });
         if (res?.sources?.length > 0) {
           setNonEmbedSources(res?.sources);
@@ -296,19 +169,7 @@ const Watch = () => {
       );
   }
 
-  const STREAM_URL_AGG = process.env.NEXT_PUBLIC_STREAM_URL_AGG;
-  const STREAM_URL_VID = process.env.NEXT_PUBLIC_STREAM_URL_VID;
   const STREAM_URL_PRO = process.env.NEXT_PUBLIC_STREAM_URL_PRO;
-  const STREAM_URL_EMB = process.env.NEXT_PUBLIC_STREAM_URL_EMB;
-  const STREAM_URL_MULTI = process.env.NEXT_PUBLIC_STREAM_URL_MULTI;
-  const STREAM_URL_SUP = process.env.NEXT_PUBLIC_STREAM_URL_SUP;
-  const STREAM_URL_CLUB = process.env.NEXT_PUBLIC_STREAM_URL_CLUB;
-  const STREAM_URL_SMASH = process.env.NEXT_PUBLIC_STREAM_URL_SMASH;
-  const STREAM_URL_ONE = process.env.NEXT_PUBLIC_STREAM_URL_ONE;
-  const STREAM_URL_ANY = process.env.NEXT_PUBLIC_STREAM_URL_ANY;
-  const STREAM_URL_PRIME = process.env.NEXT_PUBLIC_STREAM_URL_PRIME;
-  const STREAM_URL_RGS = process.env.NEXT_PUBLIC_STREAM_URL_RGS;
-  const STREAM_URL_WEB = process.env.NEXT_PUBLIC_STREAM_URL_WEB;
 
   return (
     <div className={styles.watch}>
@@ -320,48 +181,6 @@ const Watch = () => {
       </div>
       {
         <div className={styles.episodeControl}>
-          {type === "tv" ? (
-            <>
-              <div
-                ref={backBtn}
-                onClick={() => {
-                  if (episode > 1) handleBackward();
-                }}
-                data-tooltip-id="tooltip"
-                data-tooltip-html={
-                  episode > minEpisodes
-                    ? "<div>Previous episode <span class='tooltip-btn'>SHIFT + P</span></div>"
-                    : `Start of season ${season}`
-                }
-              >
-                <FaBackwardStep
-                  className={`${episode <= minEpisodes ? styles.inactive : null}`}
-                />
-              </div>
-              <div
-                ref={nextBtn}
-                onClick={() => {
-                  if (
-                    episode < maxEpisodes ||
-                    parseInt(season) + 1 <= maxSeason
-                  )
-                    handleForward();
-                }}
-                data-tooltip-id="tooltip"
-                data-tooltip-html={
-                  episode < maxEpisodes
-                    ? "<div>Next episode <span class='tooltip-btn'>SHIFT + N</span></div>"
-                    : parseInt(season) + 1 <= maxSeason
-                      ? `<div>Start season ${parseInt(season) + 1} <span class='tooltip-btn'>SHIFT + N</span></div>`
-                      : `End of season ${season}`
-                }
-              >
-                <FaForwardStep
-                  className={`${episode >= maxEpisodes && season >= maxSeason ? styles.inactive : null} ${episode >= maxEpisodes && season < maxSeason ? styles.nextSeason : null}`}
-                />
-              </div>
-            </>
-          ) : null}
           <div
             ref={moreBtn}
             onClick={() => setWatchDetails(!watchDetails)}
@@ -399,21 +218,9 @@ const Watch = () => {
               localStorage.setItem("RiveStreamLatestAgg", e.target.value);
             }}
           >
-            <option value="AGG">Aggregator : 1 (Multi-Server)</option>
-            <option value="VID">Aggregator : 2 (VidsrcMe)</option>
-            <option value="PRO">Aggregator : 3 (Best-Server)</option>
-            <option value="EMB">Aggregator : 4 (VidSrcTo)</option>
-            <option value="MULTI">Aggregator : 5 (Fast-Server)</option>
-            <option value="SUP" defaultChecked>
-              Aggregator : 6 (Multi/Most-Server)
+            <option value="PRO" defaultChecked>
+              Aggregator : 1 (Best-Server)
             </option>
-            <option value="CLUB">Aggregator : 7 </option>
-            <option value="SMASH">Aggregator : 8</option>
-            <option value="ONE">Aggregator : 9</option>
-            <option value="ANY">Aggregator : 10 (Multi-Server)</option>
-            <option value="PRIME">Aggregator : 11 (Multi-Server)</option>
-            <option value="RGS">Aggregator : 12 (Multi-Lang)</option>
-            <option value="WEB">Aggregator : 13 (Ad-Free)</option>
           </select>
         )}
 
@@ -498,200 +305,19 @@ const Watch = () => {
           option={{
             url: nonEmbedSources[nonEmbedSourcesIndex]?.url,
           }}
-          format={nonEmbedSources[nonEmbedSourcesIndex]?.format}
+          format={nonEmbedSources[nonEmbedSourcesIndex]?.isM3U8 ? "hls" : "mp4"}
           captions={nonEmbedCaptions}
           className={styles.videoPlayer}
         />
       )}
-      {source === "AGG" && id !== "" && id !== null && embedMode === true ? (
-        <iframe
-          scrolling="no"
-          src={
-            type === "movie"
-              ? `${STREAM_URL_AGG}/embed/${id}`
-              : `${STREAM_URL_AGG}/embed/${id}/${season}/${episode}`
-          }
-          className={styles.iframe}
-          allowFullScreen
-          allow="accelerometer; autoplay; encrypted-media; gyroscope;"
-          referrerPolicy="origin"
-        ></iframe>
-      ) : null}
-
-      {source === "VID" && id !== "" && id !== null && embedMode === true ? (
-        <iframe
-          scrolling="no"
-          src={
-            type === "movie"
-              ? `${STREAM_URL_VID}/embed/${type}/${id}`
-              : `${STREAM_URL_VID}/embed/${type}/${id}/${season}/${episode}`
-          }
-          className={styles.iframe}
-          allowFullScreen
-          allow="accelerometer; autoplay; encrypted-media; gyroscope;"
-          referrerPolicy="origin"
-        ></iframe>
-      ) : null}
 
       {source === "PRO" && id !== "" && id !== null && embedMode === true ? (
         <iframe
           scrolling="no"
           src={
             type === "movie"
-              ? `${STREAM_URL_PRO}/embed/${type}/${id}?&theme=00c1db`
-              : `${STREAM_URL_PRO}/embed/${type}/${id}/${season}/${episode}?&theme=00c1db`
-          }
-          className={styles.iframe}
-          allowFullScreen
-          allow="accelerometer; autoplay; encrypted-media; gyroscope;"
-          referrerPolicy="origin"
-        ></iframe>
-      ) : null}
-
-      {source === "EMB" && id !== "" && id !== null && embedMode === true ? (
-        <iframe
-          scrolling="no"
-          src={
-            type === "movie"
-              ? `${STREAM_URL_EMB}/embed/${type}/${id}`
-              : `${STREAM_URL_EMB}/embed/${type}/${id}/${season}/${episode}`
-          }
-          className={styles.iframe}
-          allowFullScreen
-          allow="accelerometer; autoplay; encrypted-media; gyroscope;"
-          referrerPolicy="origin"
-        ></iframe>
-      ) : null}
-
-      {source === "MULTI" && id !== "" && id !== null && embedMode === true ? (
-        <iframe
-          scrolling="no"
-          src={
-            type === "movie"
-              ? `${STREAM_URL_MULTI}?video_id=${id}&tmdb=1`
-              : `${STREAM_URL_MULTI}?video_id=${id}&tmdb=1&s=${season}&e=${episode}`
-          }
-          className={styles.iframe}
-          allowFullScreen
-          allow="accelerometer; autoplay; encrypted-media; gyroscope;"
-          referrerPolicy="origin"
-        ></iframe>
-      ) : null}
-
-      {source === "SUP" && id !== "" && id !== null && embedMode === true ? (
-        <iframe
-          scrolling="no"
-          src={
-            type === "movie"
-              ? `${STREAM_URL_SUP}/?video_id=${id}&tmdb=1`
-              : `${STREAM_URL_SUP}/?video_id=${id}&tmdb=1&s=${season}&e=${episode}`
-          }
-          className={styles.iframe}
-          allowFullScreen
-          allow="accelerometer; autoplay; encrypted-media; gyroscope;"
-          referrerPolicy="origin"
-        ></iframe>
-      ) : null}
-
-      {source === "CLUB" && id !== "" && id !== null && embedMode === true ? (
-        <iframe
-          scrolling="no"
-          src={
-            type === "movie"
-              ? `${STREAM_URL_CLUB}/movie/${id}`
-              : `${STREAM_URL_CLUB}/tv/${id}-${season}-${episode}`
-          }
-          className={styles.iframe}
-          allowFullScreen
-          allow="accelerometer; autoplay; encrypted-media; gyroscope;"
-          referrerPolicy="origin"
-        ></iframe>
-      ) : null}
-
-      {source === "SMASH" && id !== "" && id !== null && embedMode === true ? (
-        <iframe
-          scrolling="no"
-          src={
-            type === "movie"
-              ? `${STREAM_URL_SMASH}?tmdb=${id}`
-              : `${STREAM_URL_SMASH}?tmdb=${id}&season=${season}&episode=${episode}`
-          }
-          className={styles.iframe}
-          allowFullScreen
-          allow="accelerometer; autoplay; encrypted-media; gyroscope;"
-          referrerPolicy="origin"
-        ></iframe>
-      ) : null}
-
-      {source === "ONE" && id !== "" && id !== null && embedMode === true ? (
-        <iframe
-          scrolling="no"
-          src={
-            type === "movie"
-              ? `${STREAM_URL_ONE}/movie/${id}/watch`
-              : `${STREAM_URL_ONE}/tv/${id}/watch?season=${season}&episode=${episode}`
-          }
-          className={styles.iframe}
-          allowFullScreen
-          allow="accelerometer; autoplay; encrypted-media; gyroscope;"
-          referrerPolicy="origin"
-        ></iframe>
-      ) : null}
-
-      {source === "ANY" && id !== "" && id !== null && embedMode === true ? (
-        <iframe
-          scrolling="no"
-          src={
-            type === "movie"
-              ? `${STREAM_URL_ANY}/movie/${id}`
-              : `${STREAM_URL_ANY}/tv/${id}/${season}/${episode}`
-          }
-          className={styles.iframe}
-          allowFullScreen
-          allow="accelerometer; autoplay; encrypted-media; gyroscope;"
-          referrerPolicy="origin"
-        ></iframe>
-      ) : null}
-
-      {source === "PRIME" && id !== "" && id !== null && embedMode === true ? (
-        <iframe
-          scrolling="no"
-          src={
-            type === "movie"
-              ? `${STREAM_URL_PRIME}/movie?tmdb=${id}`
-              : `${STREAM_URL_PRIME}/tv?tmdb=${id}&season=${season}&episode=${episode}`
-          }
-          className={styles.iframe}
-          allowFullScreen
-          allow="accelerometer; autoplay; encrypted-media; gyroscope;"
-          referrerPolicy="origin"
-        ></iframe>
-      ) : null}
-
-      {source === "RGS" && id !== "" && id !== null && embedMode === true ? (
-        <iframe
-          scrolling="no"
-          src={
-            type === "movie"
-              ? `${STREAM_URL_RGS}/movies/api2/index.html?id=${id}`
-              : `${STREAM_URL_RGS}/series/api2/index.html?id=${id}&s=${season}&e=${episode}`
-          }
-          className={styles.iframe}
-          allowFullScreen
-          allow="accelerometer; autoplay; encrypted-media; gyroscope;"
-          referrerPolicy="origin"
-        ></iframe>
-      ) : null}
-
-      {source === "WEB" && id !== "" && id !== null && embedMode === true ? (
-        <iframe
-          scrolling="no"
-          src={
-            type === "movie"
-              ? `${STREAM_URL_WEB}/media/tmdb-movie-${id}`
-              : seasondata?.episodes?.length > 0
-                ? `${STREAM_URL_WEB}/media/tmdb-tv-${id}/${seasondata.id}/${seasondata.episodes[Math.abs(episode - seasondata.episodes[0].episode_number)].id}`
-                : `${STREAM_URL_WEB}/media/tmdb-tv-${id}`
+              ? `${STREAM_URL_PRO}/embed/anilist/${season}?audio=sub&autoplay=0&theme=F52E8E`
+              : `${STREAM_URL_PRO}/embed/anilist/${season}/${episode}?audio=sub&autoplay=0&theme=F52E8E`
           }
           className={styles.iframe}
           allowFullScreen

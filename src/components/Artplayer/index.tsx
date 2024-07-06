@@ -278,5 +278,7 @@ export default function Player({
     };
   }, [option.url]);
 
+  console.log(option, format);
+
   return <div ref={artRef} {...rest}></div>;
 }
