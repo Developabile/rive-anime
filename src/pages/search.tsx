@@ -53,10 +53,10 @@ const SearchPage = ({ categoryType }: any) => {
             query: query,
           });
           // console.log();
-          if (data.page > data.total_pages) {
+          if (data.page > data?.total_pages) {
             setCurrentPage(data.total_pages);
           }
-          if (currentPage > data.total_pages) {
+          if (currentPage > data?.total_pages) {
             setCurrentPage(1);
             return;
           }

@@ -18,10 +18,9 @@ function capitalizeFirstLetter(string: string) {
 const dummyList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 const CategorywisePage = ({ categoryDiv, categoryPage = null }: any) => {
   const [categoryType, setCategoryType] = useState(categoryDiv);
-  const [category, setCategory] = useState("latest"); // latest, trending, topRated
+  const [category, setCategory] = useState("trending"); // latest, trending, topRated
   const [data, setData] = useState<any>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalpages, setTotalpages] = useState(1);
   const [showFilter, setShowFilter] = useState(false);
   const [filterGenreList, setFilterGenreList] = useState("");
   const [filterCountry, setFiltercountry] = useState();
@@ -29,6 +28,7 @@ const CategorywisePage = ({ categoryDiv, categoryPage = null }: any) => {
   const [sortBy, setSortBy] = useState();
   const [trigger, setTrigger] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [nextPagePresent, setNextPagePresent] = useState(false);
   const CapitalCategoryType = capitalizeFirstLetter(categoryType);
   console.log(capitalizeFirstLetter(categoryType));
   useEffect(() => {
@@ -47,67 +47,32 @@ const CategorywisePage = ({ categoryDiv, categoryPage = null }: any) => {
             requestID: `${category}${CapitalCategoryType}`,
             page: currentPage,
             genreKeywords: filterGenreList,
-            country: filterCountry,
             year: filterYear,
             sortBy: sortBy,
           });
-        } else if (categoryPage === "anime") {
-          data = await axiosFetch({
-            requestID:
-              categoryType === "tv" ? "withKeywordsTv" : "withKeywordsMovie",
-            sortBy:
-              category === "latest"
-                ? categoryType === "tv"
-                  ? "first_air_date.desc"
-                  : "primary_release_date.desc"
-                : undefined || category === "trending"
-                  ? "popularity.desc"
-                  : undefined || category === "topRated"
-                    ? "vote_count.desc"
-                    : undefined,
-            genreKeywords: "210024,",
-            page: currentPage,
-          });
-        } else if (categoryPage === "kdrama") {
-          data = await axiosFetch({
-            requestID:
-              categoryType === "tv" ? "withKeywordsTv" : "withKeywordsMovie",
-            sortBy:
-              category === "latest"
-                ? categoryType === "tv"
-                  ? "first_air_date.desc"
-                  : "primary_release_date.desc"
-                : undefined || category === "trending"
-                  ? "popularity.desc"
-                  : undefined || category === "topRated"
-                    ? "vote_count.desc"
-                    : undefined,
-            genreKeywords: ",",
-            country: "KR",
-            page: currentPage,
-          });
         } else {
           data = await axiosFetch({
-            requestID: `${category}${CapitalCategoryType}`,
+            requestID: `${category}Anime`,
             page: currentPage,
           });
         }
         // console.log();
-        if (data.page > data.total_pages) {
-          setCurrentPage(data.total_pages);
+        if (data.page > data?.total_pages) {
+          setCurrentPage(data?.total_pages);
         }
-        if (currentPage > data.total_pages) {
+        if (currentPage > data?.total_pages) {
           setCurrentPage(data.total_pages);
           return;
         }
         setData(data.results);
-        setTotalpages(data.total_pages > 500 ? 500 : data.total_pages);
+        setNextPagePresent(data?.hasNextPage);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
         setLoading(false);
       }
     };
+    setCurrentPage(1);
     fetchData();
   }, [categoryType, category, currentPage, trigger]);
 
@@ -122,18 +87,8 @@ const CategorywisePage = ({ categoryDiv, categoryPage = null }: any) => {
   };
   return (
     <div className={styles.MoviePage}>
-      <h1>
-        {(categoryPage === null && CapitalCategoryType) ||
-          (categoryPage === "anime" && "Anime") ||
-          (categoryPage === "kdrama" && "K-Drama")}
-      </h1>
+      <h1>Anime</h1>
       <div className={styles.category}>
-        <p
-          className={`${category === "latest" ? styles.active : styles.inactive}`}
-          onClick={() => setCategory("latest")}
-        >
-          Latest
-        </p>
         <p
           className={`${category === "trending" ? styles.active : styles.inactive}`}
           onClick={() => setCategory("trending")}
@@ -141,10 +96,16 @@ const CategorywisePage = ({ categoryDiv, categoryPage = null }: any) => {
           Trending
         </p>
         <p
-          className={`${category === "topRated" ? styles.active : styles.inactive}`}
-          onClick={() => setCategory("topRated")}
+          className={`${category === "popular" ? styles.active : styles.inactive}`}
+          onClick={() => setCategory("popular")}
         >
-          Top-Rated
+          Popular
+        </p>
+        <p
+          className={`${category === "recentEpisodes" ? styles.active : styles.inactive}`}
+          onClick={() => setCategory("recentEpisodes")}
+        >
+          Recently-Updated
         </p>
         {categoryPage === null ? (
           <p
@@ -207,20 +168,13 @@ const CategorywisePage = ({ categoryDiv, categoryPage = null }: any) => {
           className={styles.pageInput}
           value={currentPage}
           min={"1"}
-          max={totalpages}
           minLength={1}
           onChange={(e: any) => {
             // console.log({ val: e.target.value });
             if (e.target.value === "") setCurrentPage(e.target.value);
             else if (e.target.value === "0") {
               toast.error(`Page number should be greater than 0`);
-            } else if (e.target.value <= totalpages)
-              setCurrentPage(e.target.value);
-            else {
-              toast.error(
-                `Page number should be less than Total pages: ${totalpages}`,
-              );
-            }
+            } else setCurrentPage(e.target.value);
           }}
         />
       </div>
@@ -231,13 +185,10 @@ const CategorywisePage = ({ categoryDiv, categoryPage = null }: any) => {
         onPageChange={(event) => {
           setCurrentPage(event.selected + 1);
           console.log({ event });
-          if (currentPage > totalpages) {
-            setCurrentPage(totalpages);
-          }
           window.scrollTo(0, 0);
         }}
         forcePage={currentPage - 1}
-        pageCount={totalpages}
+        pageCount={nextPagePresent ? currentPage + 1 : currentPage}
         breakLabel=" ... "
         previousLabel={<AiFillLeftCircle className={styles.paginationIcons} />}
         nextLabel={<AiFillRightCircle className={styles.paginationIcons} />}
