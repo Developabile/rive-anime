@@ -42,6 +42,7 @@ export default async function axiosFetch({
     airingSchedule: `${baseURL}/meta/anilist/airing-schedule`,
 
     infoAnime: `${baseURL}/meta/anilist/info/${id}?provider=${provider}`,
+    infoTmdb: `${baseURL}/meta/tmdb/info/${id}`,
     recentEpisodesAnime: `${baseURL}/meta/anilist/recent-episodes?page=${page}&perPage=${perPage}&provider=${provider}`,
 
     episodeStreamingLinks: `${baseURL}/meta/anilist/watch/${id}`,

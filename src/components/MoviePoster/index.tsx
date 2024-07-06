@@ -10,21 +10,23 @@ import "react-lazy-load-image-component/src/effects/opacity.css";
 const MoviePoster = ({ data, media_type }: any) => {
   const [imageLoading, setImageLoading] = useState(true);
   const [imagePlaceholder, setImagePlaceholder] = useState(false);
+  // console.log(data);
+
   return (
     <Link
-      href={`/detail?type=${media_type}&id=${data?.id}`}
+      href={`/detail?type=${data?.type}&id=${data?.id}`}
       className={styles.MovieCardSmall}
       aria-label={data?.name || "poster"}
     >
       <div
-        className={`${styles.img} ${data?.poster_path !== null && data?.poster_path !== undefined ? "skeleton" : null}`}
+        className={`${styles.img} ${data?.image !== null && data?.image !== undefined ? "skeleton" : null}`}
       >
         {/* if rllic package is not available, then start using this code again, and comment/delete the rllic code */}
         {/* <AnimatePresence mode="sync">
           <motion.img
             key={data?.id}
             alt={data?.id || "sm"}
-            src={`${imagePlaceholder ? "/images/logo.svg" : data?.poster_path !== null && data?.poster_path !== undefined ? process.env.NEXT_PUBLIC_TMBD_IMAGE_URL + data?.poster_path : "/images/logo.svg"}`}
+            src={`${imagePlaceholder ? "/images/logo.svg" : data?.image !== null && data?.image !== undefined ? process.env.NEXT_PUBLIC_TMBD_IMAGE_URL + data?.image : "/images/logo.svg"}`}
             initial={{ opacity: 0 }}
             animate={{
               opacity: imageLoading ? 0 : 1,
@@ -49,7 +51,7 @@ const MoviePoster = ({ data, media_type }: any) => {
         <LazyLoadImage
           key={data?.id}
           alt={data?.id || "sm"}
-          src={`${imagePlaceholder ? "/images/logo.svg" : data?.poster_path !== null && data?.poster_path !== undefined ? process.env.NEXT_PUBLIC_TMBD_IMAGE_URL?.replace("/original", "/w185") + data?.poster_path : "/images/logo.svg"}`}
+          src={`${data?.image?.replace("/large/", "/medium/")}`}
           height="100%"
           width="100%"
           useIntersectionObserver={true}

@@ -41,6 +41,7 @@ export default async function axiosFetch({
     airingSchedule: `${baseURL}?requestID=airingSchedule`,
 
     infoAnime: `${baseURL}?requestID=infoAnime&id=${id}&provider=${provider}`,
+    infoTmdb: `${baseURL}?requestID=infoTmdb&id=${id}`,
     recentEpisodesAnime: `${baseURL}?requestID=recentEpisodesAnime&page=${page}&perPage=${perPage}&provider=${provider}`,
 
     episodeStreamingLinks: `${baseURL}?requestID=episodeStreamingLinks&id=${id}`,

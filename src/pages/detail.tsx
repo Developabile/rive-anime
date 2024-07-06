@@ -45,24 +45,29 @@ const DetailPage = () => {
     setEpisode(params.get("episode"));
     const fetchData = async () => {
       try {
-        const data = await axiosFetch({ requestID: `${type}Data`, id: id });
+        const data = await axiosFetch({ requestID: `infoAnime`, id: id });
         setData(data);
-        const Videos = await axiosFetch({ requestID: `${type}Videos`, id: id });
-        setTrailer(
-          Videos?.results?.find(
-            (ele: any) => ele.type === "Trailer" && ele.official === true,
-          ),
-        );
-        const response = await axiosFetch({
-          requestID: `${type}Images`,
-          id: id,
-        });
+        console.log({ data });
+        // const Videos = await axiosFetch({ requestID: `${type}Videos`, id: id });
+        setTrailer(data?.trailer);
+        // const response = await axiosFetch({
+        //   requestID: `${type}Images`,
+        //   id: id,
+        // });
         // setImages(response.results);
         let arr: any = [];
-        response.backdrops.map((ele: any, i: number) => {
-          if (i < 20)
-            arr.push(process.env.NEXT_PUBLIC_TMBD_IMAGE_URL + ele.file_path);
+        data?.artwork?.map((ele: any, i: number) => {
+          if (
+            arr?.length < 20 &&
+            ele?.type == "poster" &&
+            !ele?.img?.includes("medium") &&
+            !ele?.img?.includes("small")
+          )
+            arr.push(ele?.img);
+          else return;
         });
+        console.log(arr);
+
         // if (arr.length === 0) {
         //   response.posters.map((ele: any, i) => {
         //     if (i < 10) arr.push(process.env.NEXT_PUBLIC_TMBD_IMAGE_URL + ele.file_path);
@@ -70,7 +75,7 @@ const DetailPage = () => {
         // }
         if (arr.length === 0) arr.push("/images/logo.svg");
         setImages(arr);
-        setLoading(false);
+        // setLoading(false);
       } catch (error) {
         // console.error("Error fetching data:", error);
       }
@@ -79,7 +84,7 @@ const DetailPage = () => {
       //   setData(data);
       // }
     };
-    fetchData();
+    if (id !== undefined && id != "" && id != null) fetchData();
   }, [params, id]);
 
   useEffect(() => {
@@ -161,9 +166,16 @@ const DetailPage = () => {
           <div className={styles.HomeHeroMeta}>
             <h1
               data-tooltip-id="tooltip"
-              data-tooltip-content={data?.title || data?.name || "name"}
+              data-tooltip-content={
+                data?.title?.english ||
+                data?.title?.userPreferred ||
+                data?.title?.native ||
+                "name"
+              }
             >
-              {data?.title || data?.name || <Skeleton />}
+              {data?.title?.english ||
+                data?.title?.userPreferred ||
+                data?.title?.native || <Skeleton />}
             </h1>
             <div className={styles.HomeHeroMetaRow2}>
               <p className={styles.type}>
@@ -184,7 +196,7 @@ const DetailPage = () => {
                       className={styles.links}
                       data-tooltip-id="tooltip"
                       data-tooltip-content="Watch Trailer"
-                      href={`https://youtube.com/watch?v=${trailer.key}`}
+                      href={`https://youtube.com/watch?v=${trailer?.id}`}
                       target="_blank"
                     >
                       trailer <FaYoutube className={styles.IconsMobileNone} />

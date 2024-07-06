@@ -111,9 +111,9 @@ const MovieCardLarge = ({ data, media_type, genresMovie, genresTv }: any) => {
         <p>
           {capitalizeFirstLetter(data?.type?.toLowerCase() || media_type)}
           {data?.rating ? ` • ${data?.rating.toFixed(0)}%` : null}
-          {!Number.isNaN(data?.releaseDate)
+          {data?.releaseDate
             ? ` • ${data?.releaseDate}`
-            : null}{" "}
+            : ` • ${data?.episodes}`}{" "}
           {data?.status !== undefined ? ` • ${data?.status}` : null}
         </p>
         {data?.genres?.join(
