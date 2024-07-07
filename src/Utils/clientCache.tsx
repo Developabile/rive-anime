@@ -24,7 +24,7 @@
 // }
 
 // cache storage
-const CACHE_NAME = "rive-api-data";
+const CACHE_NAME = "rivekun-api-data";
 const CACHE_TTL: number = 1800; // Cache TTL in seconds (1/2 hour)
 
 // Function to set data in the cache
