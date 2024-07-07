@@ -80,7 +80,8 @@ export default async function axiosFetch({
     cachedResult &&
     cachedResult !== null &&
     cachedResult !== undefined &&
-    cachedResult !== ""
+    cachedResult !== "" &&
+    typeof cachedResult !== "string"
   ) {
     return await cachedResult;
   }
