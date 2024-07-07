@@ -56,14 +56,14 @@ const MetaDetails = ({ id, type, data }: any) => {
     <div className={styles.MetaDetailPage}>
       <div className={styles.MetaDetails} ref={metaDetailsPage}>
         <div className={styles.category}>
-          {type === "tv" ? (
-            <p
-              className={`${category === "episodes" ? styles.active : styles.inactive}`}
-              onClick={() => setCategory("episodes")}
-            >
-              Episodes
-            </p>
-          ) : null}
+          {/* {type === "tv" ? ( */}
+          <p
+            className={`${category === "episodes" ? styles.active : styles.inactive}`}
+            onClick={() => setCategory("episodes")}
+          >
+            Episodes
+          </p>
+          {/* // ) : null} */}
           <p
             className={`${category === "description" ? styles.active : styles.inactive}`}
             onClick={() => setCategory("description")}
@@ -77,7 +77,7 @@ const MetaDetails = ({ id, type, data }: any) => {
             Related
           </p>
         </div>
-        {type === "tv" && category === "episodes" ? (
+        {category === "episodes" ? (
           <div className={styles.EpisodeList}>
             {category === "episodes" &&
               data?.episodes?.map((ele: any) => {
@@ -99,13 +99,11 @@ const MetaDetails = ({ id, type, data }: any) => {
           </div>
         ) : null}
 
-        {type === "tv" &&
-        category === "episodes" &&
-        data?.episodes?.length === 0 ? (
+        {category === "episodes" && data?.episodes?.length === 0 ? (
           <p>No Episodes Found</p>
         ) : null}
 
-        {type === "tv" && category === "episodes" && data === undefined
+        {category === "episodes" && data === undefined
           ? dummyList.map((ele) => (
               <div className={styles.episode}>
                 <Skeleton
@@ -151,7 +149,7 @@ const MetaDetails = ({ id, type, data }: any) => {
                   <p>{data?.genres?.join(", ")}</p>
                 </>
               ) : null}
-              {type === "tv" && data?.status && (
+              {data?.status && (
                 <>
                   <h3>Show Details</h3>
                   {data?.status && <p> Status : {data?.status}</p>}

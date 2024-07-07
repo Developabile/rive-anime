@@ -107,7 +107,7 @@ const WatchDetails = ({
           </>
         </div>
 
-        {type === "tv" && category === "episodes" ? (
+        {category === "episodes" ? (
           <div className={styles.EpisodeList}>
             {category === "episodes" &&
               categoryData?.episodes?.map((ele: any) => {
@@ -129,13 +129,11 @@ const WatchDetails = ({
           </div>
         ) : null}
 
-        {type === "tv" &&
-        category === "episodes" &&
-        categoryData?.episodes?.length === 0 ? (
+        {category === "episodes" && categoryData?.episodes?.length === 0 ? (
           <p>No Episodes Found</p>
         ) : null}
 
-        {type === "tv" && category === "episodes" && categoryData === undefined
+        {category === "episodes" && categoryData === undefined
           ? dummyList.map((ele) => (
               <div className={styles.episode}>
                 <Skeleton height={100} className={styles.CardSmall} />

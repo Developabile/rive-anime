@@ -181,13 +181,13 @@ const DetailPage = () => {
               data-tooltip-content={
                 data?.title?.english ||
                 data?.title?.userPreferred ||
-                data?.title?.native ||
+                data?.title?.romaji ||
                 "name"
               }
             >
               {data?.title?.english ||
                 data?.title?.userPreferred ||
-                data?.title?.native || <Skeleton />}
+                data?.title?.romaji || <Skeleton />}
             </h1>
             <div className={styles.HomeHeroMetaRow2}>
               <p className={styles.type}>
@@ -195,14 +195,25 @@ const DetailPage = () => {
               </p>
               {data ? (
                 <>
-                  <Link
-                    className={styles.links}
-                    data-tooltip-id="tooltip"
-                    data-tooltip-content="Watch Online"
-                    href={`${type === "movie" ? `/watch?type=${type}&id=${data?.id}` : `/watch?type=${type}&id=${data?.id}&season=1&episode=1`}`}
-                  >
-                    watch <FaPlay className={styles.IconsMobileNone} />
-                  </Link>
+                  {data?.episodes?.length > 0 ? (
+                    <Link
+                      className={styles.links}
+                      data-tooltip-id="tooltip"
+                      data-tooltip-content="Watch Online"
+                      href={`${`${data?.episodes?.length > 0 && `/watch?type=tv&id=${data?.episodes[0]?.id}&season=${id}&episode=${data?.episodes[0]?.number}`}`}`}
+                    >
+                      watch <FaPlay className={styles.IconsMobileNone} />
+                    </Link>
+                  ) : (
+                    <Link
+                      className={styles.links}
+                      data-tooltip-id="tooltip"
+                      data-tooltip-content="Watch Online"
+                      href={`#`}
+                    >
+                      No Watch
+                    </Link>
+                  )}
                   {trailer && (
                     <Link
                       className={styles.links}

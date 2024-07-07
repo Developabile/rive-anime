@@ -84,7 +84,9 @@ const Navbar = ({ children }: any) => {
         data-tooltip-content="Anime"
         className={styles.mobileHide}
       >
-        {pathname === "/anime" ? (
+        {pathname === "/anime" ||
+        pathname === "/tv" ||
+        pathname === "/movie" ? (
           <RiEye2Fill className={styles.active} />
         ) : (
           <RiEye2Line className={styles.inactive} />
