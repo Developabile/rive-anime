@@ -47,6 +47,9 @@ const DetailPage = () => {
       try {
         const data = await axiosFetch({ requestID: `infoAnime`, id: id });
         setData(data);
+        if (typeof data === "string") {
+          toast.info(<div>Data Load Failed due to very large data size</div>);
+        }
         console.log({ data });
         // const Videos = await axiosFetch({ requestID: `${type}Videos`, id: id });
         setTrailer(data?.trailer);

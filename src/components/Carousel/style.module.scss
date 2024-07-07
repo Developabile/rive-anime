@@ -73,4 +73,12 @@
   .carousel_images .img span {
     height: var(--carousel-mobile-height);
   }
+
+  .YTplayer {
+    iframe {
+      position: absolute;
+      height: 150%;
+      width: 120%;
+    }
+  }
 }

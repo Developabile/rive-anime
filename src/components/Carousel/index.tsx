@@ -139,7 +139,7 @@ const Carousel = ({
             <iframe
               width="560"
               height="315"
-              src={`https://www.youtube.com/embed/${trailer}?autoplay=1&mute=1&controls=0&suggestion=0&showinfo=0&rel=0`}
+              src={`https://www.youtube.com/embed/${trailer}?autoplay=1&mute=1&controls=0&suggestion=0&showinfo=0&rel=0&loop=1`}
               allow="autoplay; clipboard-write; encrypted-media; gyroscope;"
               allowFullScreen
             ></iframe>
