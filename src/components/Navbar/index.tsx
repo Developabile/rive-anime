@@ -82,7 +82,7 @@ const Navbar = ({ children }: any) => {
         aria-label="Anime"
         data-tooltip-id="tooltip"
         data-tooltip-content="Anime"
-        className={styles.mobileHide}
+        // className={styles.mobileHide}
       >
         {pathname === "/anime" ||
         pathname === "/tv" ||
