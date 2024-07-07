@@ -1,9 +1,9 @@
 # Domains
 
-| Domain                        | Status |
-| ----------------------------- | ------ |
-| https://anime.rivestream.live | ✅     |
-| https://rivekun.netlify.app   | ✅     |
+| Domain                          | Status |
+| ------------------------------- | ------ |
+| https://rivekun.rivestream.live | ✅     |
+| https://rivekun.netlify.app     | ✅     |
 
 **Legends**:
 

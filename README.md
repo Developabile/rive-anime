@@ -16,7 +16,7 @@ Your Portal to Anime Adventures
 
 # **_RiveKun_**
 
-Rive is a cutting-edge platform for streaming Anime online. Our project utilizes Next.js + Anilist. Your Portal to Anime Adventures
+RiveKun is a cutting-edge platform for streaming Anime online. Our project utilizes Next.js + Anilist. Your Portal to Anime Adventures
 
 <div align="left">
  <p>
@@ -42,7 +42,7 @@ Rive is a cutting-edge platform for streaming Anime online. Our project utilizes
 
 <!-- - https://rivestream.tech -->
 
-- https://anime.rivestream.live
+- https://rivekun.rivestream.live
 - https://rivekun.netlify.app
 
 **connect**:
