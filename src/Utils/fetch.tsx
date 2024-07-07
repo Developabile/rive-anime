@@ -34,6 +34,8 @@ export default async function axiosFetch({
   const randomURL = process.env.NEXT_PUBLIC_RANDOM_URL;
   const ProviderURL = process.env.NEXT_PUBLIC_PROVIDER_URL;
   const ExternalProviderURL = process.env.NEXT_PUBLIC_EXTERNAL_PROVIDER_URL;
+  // console.log({ animeStatus });
+
   const requests: any = {
     trendingAnime: `${baseURL}/meta/anilist/trending?page=${page}&perPage=${perPage}`,
     popularAnime: `${baseURL}/meta/anilist/popular?page=${page}&perPage=${perPage}`,

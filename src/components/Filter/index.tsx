@@ -7,86 +7,104 @@ function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-const countryData = [
-  { name: "Argentina", abbr: "AR" },
-  { name: "Australia", abbr: "AU" },
-  { name: "Austria", abbr: "AT" },
-  { name: "Belgium", abbr: "BE" },
-  { name: "Brazil", abbr: "BR" },
-  { name: "Canada", abbr: "CA" },
-  { name: "China", abbr: "CN" },
-  { name: "France", abbr: "FR" },
-  { name: "Germany", abbr: "DE" },
-  { name: "India", abbr: "IN" },
-  { name: "Italy", abbr: "IT" },
-  { name: "Japan", abbr: "JP" },
-  { name: "Mexico", abbr: "MX" },
-  { name: "Netherlands", abbr: "NL" },
-  { name: "Russia", abbr: "RU" },
-  { name: "South Korea", abbr: "KR" },
-  { name: "Spain", abbr: "ES" },
-  { name: "Sweden", abbr: "SE" },
-  { name: "Switzerland", abbr: "CH" },
-  { name: "Taiwan", abbr: "TW" },
-  { name: "United Kingdom", abbr: "UK" },
-  { name: "United States", abbr: "US" },
-  { name: "Denmark", abbr: "DK" },
-  { name: "Norway", abbr: "NO" },
-  { name: "Finland", abbr: "FI" },
-  { name: "Portugal", abbr: "PT" },
-  { name: "Greece", abbr: "GR" },
-  { name: "Turkey", abbr: "TR" },
-  { name: "Poland", abbr: "PL" },
-  { name: "Czech Republic", abbr: "CZ" },
-  { name: "Hungary", abbr: "HU" },
-  { name: "Ireland", abbr: "IE" },
-  { name: "New Zealand", abbr: "NZ" },
-  { name: "South Africa", abbr: "ZA" },
-  { name: "Egypt", abbr: "EG" },
-  { name: "Thailand", abbr: "TH" },
-  { name: "Singapore", abbr: "SG" },
-  { name: "Malaysia", abbr: "MY" },
-  { name: "Philippines", abbr: "PH" },
-  { name: "Indonesia", abbr: "ID" },
-  { name: "Vietnam", abbr: "VN" },
-  { name: "United Arab Emirates", abbr: "AE" },
+const genreData = [
+  "Action",
+  "Adventure",
+  "Cars",
+  "Comedy",
+  "Drama",
+  "Fantasy",
+  "Horror",
+  "Mahou Shoujo",
+  "Mecha",
+  "Music",
+  "Mystery",
+  "Psychological",
+  "Romance",
+  "Sci-Fi",
+  "Slice of Life",
+  "Sports",
+  "Supernatural",
+  "Thriller",
+];
+const SortData = [
+  { name: "Popularity &darr; ", val: "POPULARITY_DESC" },
+  { name: "Popularity &uarr;", val: "POPULARITY" },
+  { name: "Trending &darr;", val: "TRENDING_DESC" },
+  { name: "Trending &uarr;", val: "TRENDING" },
+  { name: "Updated At &darr;", val: "UPDATED_AT_DESC" },
+  { name: "Updated At &uarr;", val: "UPDATED_AT" },
+  { name: "Start Date &darr;", val: "START_DATE_DESC" },
+  { name: "Start Date &uarr;", val: "START_DATE" },
+  { name: "End Date &darr;", val: "END_DATE_DESC" },
+  { name: "End Date &uarr;", val: "END_DATE" },
+  { name: "Favourites &darr;", val: "FAVOURITES_DESC" },
+  { name: "Favourites &uarr;", val: "FAVOURITES" },
+  { name: "Rating &darr;", val: "SCORE_DESC" },
+  { name: "Rating &uarr;", val: "SCORE" },
+  { name: "Title Romaji &darr;", val: "TITLE_ROMAJI_DESC" },
+  { name: "Title Romaji &uarr;", val: "TITLE_ROMAJI" },
+  { name: "Title English &darr;", val: "TITLE_ENGLISH_DESC" },
+  { name: "Title English &uarr;", val: "TITLE_ENGLISH" },
+  { name: "Title Native &darr;", val: "TITLE_NATIVE_DESC" },
+  { name: "Title Native &uarr;", val: "TITLE_NATIVE" },
+  { name: "Episodes &darr;", val: "EPISODES_DESC" },
+  { name: "Episodes &uarr;", val: "EPISODES" },
+  { name: "ID &darr;", val: "ID_DESC" },
+  { name: "ID &uarr;", val: "ID" },
+];
+const seasonData = [
+  { name: "Winter", val: "WINTER" },
+  { name: "Spring", val: "SPRING" },
+  { name: "Summer", val: "SUMMER" },
+  { name: "Fall", val: "FALL" },
+];
+const formatData = [
+  { name: "Tv", val: "TV" },
+  { name: "Movie", val: "MOVIE" },
+  { name: "Tv Short", val: "TV_SHORT" },
+  { name: "OVA", val: "OVA" },
+  { name: "ONA", val: "ONA" },
+  { name: "Special", val: "SPECIAL" },
+  { name: "Music", val: "MUSIC" },
+];
+const statusData = [
+  { name: "Releasing", val: "RELEASING" },
+  { name: "Not Yet Released", val: "NOT_YET_RELEASED" },
+  { name: "Finished", val: "FINISHED" },
+  { name: "Cancelled", val: "CANCELLED" },
+  { name: "Haitus", val: "HIATUS" },
 ];
 const Filter = ({
   categoryType,
   setShowFilter,
   setFilterYear,
-  setFiltercountry,
   setFilterGenreList,
   filterGenreList,
-  filterCountry,
   filterYear,
   sortBy,
   setSortBy,
   setCategory,
   setTrigger,
   trigger,
+  foramt,
+  setFormat,
+  season,
+  setSeason,
+  animeStatus,
+  setAnimeStatus,
 }: any) => {
   const CapitalCategoryType = capitalizeFirstLetter(categoryType);
-  const [genreData, setGenreData] = useState([]);
-  const [selectedCountryCheckbox, setSelectedCountryCheckbox] = useState();
+  // const [genreData, setGenreData] = useState([]);
+  const [selectedSeasonCheckbox, setSelectedSeasonCheckbox] = useState(season);
+  const [selectedFormatCheckbox, setSelectedFormatCheckbox] = useState(foramt);
+  const [selectedStatusCheckbox, setSelectedStatusCheckbox] =
+    useState(animeStatus);
   // const [countryData, setCountryData] = useState([]);
   const [yearData, setYearData] = useState();
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await axiosFetch({
-          requestID: `genres${CapitalCategoryType}`,
-        });
-        setGenreData(data.genres);
-        // console.log({ data });
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-    fetchData();
-    setSelectedCountryCheckbox(filterCountry);
-    console.log({ filterGenreList });
-  }, []);
+  // useEffect(() => {
+  //   setSelectedCountryCheckbox(filterCountry);
+  // }, []);
   const handleGenereSelect = (id: any) => {
     console.log({ id });
     setFilterGenreList(
@@ -94,23 +112,46 @@ const Filter = ({
     );
     // console.log({ filterGenreList });
   };
-  const handleCountrySelect = (name: any) => {
+  const handleSortSelect = (id: any) => {
+    console.log({ id });
+    setSortBy(sortBy === "" ? id + "," : sortBy + id + ",");
+    // console.log({ filterGenreList });
+  };
+
+  const handleSeasonSelect = (name: any) => {
     console.log({ name });
-    setFiltercountry(name);
-    setSelectedCountryCheckbox(name);
+    setSeason(name);
+    setSelectedSeasonCheckbox(name);
+    // console.log({ filterGenreList });
+  };
+  const handleFormatSelect = (name: any) => {
+    console.log({ name });
+    setFormat(name);
+    setSelectedFormatCheckbox(name);
+    // console.log({ filterGenreList });
+  };
+  const handleStatusSelect = (name: any) => {
+    console.log({ name });
+    setAnimeStatus(name);
+    setSelectedStatusCheckbox(name);
     // console.log({ filterGenreList });
   };
   const handleFilterSubmit = () => {
     setCategory("filter");
     setTrigger(!trigger);
     setShowFilter(false);
-    // console.log({ filterGenreList });
+    console.log({ filterGenreList });
   };
   const handleFilterReset = () => {
     setFilterGenreList("");
     setFilterYear(undefined);
-    setFiltercountry(undefined);
-    setSelectedCountryCheckbox(undefined);
+    setFormat(undefined);
+    setSortBy("");
+    setAnimeStatus(undefined);
+    setSeason(undefined);
+    setSelectedSeasonCheckbox(undefined);
+    setSelectedFormatCheckbox(undefined);
+    setSelectedStatusCheckbox(undefined);
   };
 
   return (
@@ -129,19 +170,19 @@ const Filter = ({
       {genreData.map((ele: any) => {
         const selectedGenres =
           typeof filterGenreList === "string" ? filterGenreList.split(",") : [];
-        const isChecked = selectedGenres.includes(ele.id.toString());
+        const isChecked = selectedGenres.includes(ele);
         return (
           <div
             className={`${styles.checkboxDiv} ${isChecked ? styles.active : styles.inactive}`}
           >
-            <label className={"container"} htmlFor={ele.id}>
-              {ele.name}
+            <label className={"container"} htmlFor={ele}>
+              {ele}
               <input
                 type="checkbox"
-                id={ele.id}
-                name={ele.name}
-                value={ele.id}
-                onChange={() => handleGenereSelect(ele.id)}
+                id={ele}
+                name={ele}
+                value={ele}
+                onChange={() => handleGenereSelect(ele)}
                 checked={isChecked}
               />
               <span className={"checkmark"}></span>
@@ -152,21 +193,91 @@ const Filter = ({
       {genreData?.length === 0 && (
         <Skeleton count={7} style={{ margin: "0.2rem 0", padding: "0.5rem" }} />
       )}
-      <h2>Country</h2>
-      {countryData.map((ele: any) => {
+
+      <h2>Sort By</h2>
+      {SortData.map((ele: any) => {
+        const selectedGenres =
+          typeof sortBy === "string" ? sortBy.split(",") : [];
+        const isChecked = selectedGenres.includes(ele?.val);
         return (
           <div
-            className={`${styles.checkboxDiv} ${selectedCountryCheckbox === ele.abbr ? styles.active : styles.inactive}`}
+            className={`${styles.checkboxDiv} ${isChecked ? styles.active : styles.inactive}`}
           >
-            <label className={"container"} htmlFor={ele.name}>
-              {ele.name}
+            <label className={"container"} htmlFor={ele?.name}>
+              <span dangerouslySetInnerHTML={{ __html: ele?.name }} />
               <input
                 type="checkbox"
-                id={ele.name}
-                name={ele.name}
-                value={ele.name}
-                onChange={() => handleCountrySelect(ele.abbr)}
-                checked={selectedCountryCheckbox === ele.abbr}
+                id={ele?.name}
+                name={ele?.name}
+                value={ele?.name}
+                onChange={() => handleSortSelect(ele?.val)}
+                checked={isChecked}
+              />
+              <span className={"checkmark"}></span>
+            </label>
+          </div>
+        );
+      })}
+      {genreData?.length === 0 && (
+        <Skeleton count={7} style={{ margin: "0.2rem 0", padding: "0.5rem" }} />
+      )}
+      <h2>Season</h2>
+      {seasonData.map((ele: any) => {
+        return (
+          <div
+            className={`${styles.checkboxDiv} ${selectedSeasonCheckbox === ele.val ? styles.active : styles.inactive}`}
+          >
+            <label className={"container"} htmlFor={ele?.name}>
+              {ele?.name}
+              <input
+                type="checkbox"
+                id={ele?.name}
+                name={ele?.name}
+                value={ele?.val}
+                onChange={() => handleSeasonSelect(ele?.val)}
+                checked={selectedSeasonCheckbox === ele?.val}
+              />
+              <span className={"checkmark"}></span>
+            </label>
+          </div>
+        );
+      })}
+      <h2>Format</h2>
+      {formatData.map((ele: any) => {
+        return (
+          <div
+            className={`${styles.checkboxDiv} ${selectedFormatCheckbox === ele.val ? styles.active : styles.inactive}`}
+          >
+            <label className={"container"} htmlFor={ele?.val}>
+              {ele?.name}
+              <input
+                type="checkbox"
+                id={ele?.val}
+                name={ele?.val}
+                value={ele?.val}
+                onChange={() => handleFormatSelect(ele?.val)}
+                checked={selectedFormatCheckbox === ele?.val}
+              />
+              <span className={"checkmark"}></span>
+            </label>
+          </div>
+        );
+      })}
+      <h2>Status</h2>
+      {statusData.map((ele: any) => {
+        return (
+          <div
+            className={`${styles.checkboxDiv} ${selectedStatusCheckbox === ele.val ? styles.active : styles.inactive}`}
+          >
+            <label className={"container"} htmlFor={ele?.val}>
+              {ele?.name}
+              <input
+                type="checkbox"
+                id={ele?.val}
+                name={ele?.val}
+                value={ele?.val}
+                onChange={() => handleStatusSelect(ele?.val)}
+                checked={selectedStatusCheckbox === ele?.val}
               />
               <span className={"checkmark"}></span>
             </label>
@@ -184,47 +295,6 @@ const Filter = ({
         }}
         placeholder="Enter Year"
       />
-      <h2>sort</h2>
-      <select
-        name="source"
-        id="source"
-        className={styles.source}
-        value={sortBy}
-        onChange={(e) => setSortBy(e.target.value)}
-      >
-        <option value="popularity.desc" defaultChecked>
-          Popularity &darr; (Desc){" "}
-        </option>
-        <option value="popularity.asc">Popularity &uarr; (Asc)</option>
-        <option value="vote_average.desc">Vote &darr; (Desc)</option>
-        <option value="vote_average.asc">Vote &uarr; (Asc)</option>
-        {categoryType === "tv" && (
-          <>
-            <option value="name.desc">Name &darr; (Desc)</option>
-            <option value="name.asc">Name &uarr; (Asc)</option>
-            <option value="first_air_date.desc">
-              First Air Date &darr; (Desc)
-            </option>
-            <option value="first_air_date.asc">
-              First Air Date &uarr; (Asc)
-            </option>
-          </>
-        )}
-        {categoryType === "movie" && (
-          <>
-            <option value="title.desc">Title &darr; (Desc)</option>
-            <option value="title.asc">Title &uarr; (Asc)</option>
-            <option value="primary_release_date.desc">
-              Release Date &darr; (Desc)
-            </option>
-            <option value="primary_release_date.asc">
-              Release Date &uarr; (Asc)
-            </option>
-            <option value="revenue.desc">Revenue &darr; (Desc)</option>
-            <option value="revenue.asc">Revenue &uarr; (Asc)</option>
-          </>
-        )}
-      </select>
 
       <div className={styles.filterButtons}>
         <div className={styles.filterSubmit} onClick={handleFilterSubmit}>

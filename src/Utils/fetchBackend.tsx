@@ -33,6 +33,27 @@ export default async function axiosFetch({
   // const API_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
   const baseURL = "/api/backendfetch";
   // const randomURL = process.env.NEXT_PUBLIC_RANDOM_URL;
+  const genresArray: any = genreKeywords
+    ?.split(",")
+    ?.filter((ele) => ele !== "")
+    ?.map((ele) => ele.trim());
+
+  const genres =
+    genresArray?.length > 0
+      ? encodeURIComponent(JSON.stringify(genresArray))
+      : "";
+
+  const sortArray: any = sortBy
+    ?.split(",")
+    ?.filter((ele) => ele !== "")
+    ?.map((ele) => ele.trim());
+
+  const sortRes =
+    sortArray?.length > 0 ? encodeURIComponent(JSON.stringify(sortArray)) : "";
+
+  // console.log({ genreKeywords });
+  // console.log({ genres });
+
   const requests: any = {
     trendingAnime: `${baseURL}?requestID=trendingAnime&page=${page}&perPage=${perPage}`,
     popularAnime: `${baseURL}?requestID=popularAnime&page=${page}&perPage=${perPage}`,
@@ -47,7 +68,7 @@ export default async function axiosFetch({
     episodeStreamingLinks: `${baseURL}?requestID=episodeStreamingLinks&id=${id}`,
 
     search: `${baseURL}?requestID=search&query=${query}&page=${page}`,
-    advancedSearch: `${baseURL}?requestID=advancedSearch${query != undefined ? "&query=" + query : ""}&page=${page}&perPage=${perPage}${season != undefined ? "&season=" + season : ""}${format != undefined ? "&format=" + format : ""}${sortBy != undefined ? "&sort=" + sortBy : ""}${genreKeywords != undefined ? "&genres=" + genreKeywords : ""}${id != undefined ? "&id=" + id : ""}${year != undefined ? "&year=" + year : ""}${animeStatus != undefined ? "&status=" + animeStatus : ""}`,
+    advancedSearch: `${baseURL}?requestID=advancedSearch${query != undefined ? "&query=" + query : ""}&page=${page}&perPage=${perPage}${season != undefined ? "&season=" + season : ""}${format != undefined ? "&format=" + format : ""}${sortBy != undefined && sortBy != "" ? "&sortBy=" + sortRes : ""}${genreKeywords != undefined && genreKeywords != "" ? "&genreKeywords=" + `${genres}` : ""}${id != undefined ? "&id=" + id : ""}${year != undefined ? "&year=" + year : ""}${animeStatus != undefined ? "&animeStatus=" + animeStatus : ""}`,
   };
   const final_request = requests[request];
   // console.log({ final_request });

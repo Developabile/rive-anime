@@ -22,13 +22,15 @@ const CategorywisePage = ({ categoryDiv, categoryPage = null }: any) => {
   const [data, setData] = useState<any>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [showFilter, setShowFilter] = useState(false);
-  const [filterGenreList, setFilterGenreList] = useState("");
-  const [filterCountry, setFiltercountry] = useState();
+  const [filterGenreList, setFilterGenreList] = useState<any>("");
   const [filterYear, setFilterYear] = useState();
-  const [sortBy, setSortBy] = useState();
+  const [sortBy, setSortBy] = useState<any>("");
   const [trigger, setTrigger] = useState(false);
   const [loading, setLoading] = useState(true);
   const [nextPagePresent, setNextPagePresent] = useState(false);
+  const [season, setSeason] = useState();
+  const [format, setFormat] = useState();
+  const [animeStatus, setAnimeStatus] = useState();
   const CapitalCategoryType = capitalizeFirstLetter(categoryType);
   console.log(capitalizeFirstLetter(categoryType));
   useEffect(() => {
@@ -44,8 +46,11 @@ const CategorywisePage = ({ categoryDiv, categoryPage = null }: any) => {
         let data;
         if (category === "filter") {
           data = await axiosFetch({
-            requestID: `${category}${CapitalCategoryType}`,
+            requestID: `advancedSearch`,
             page: currentPage,
+            season: season,
+            format: format,
+            animeStatus: animeStatus,
             genreKeywords: filterGenreList,
             year: filterYear,
             sortBy: sortBy,
@@ -57,14 +62,14 @@ const CategorywisePage = ({ categoryDiv, categoryPage = null }: any) => {
           });
         }
         // console.log();
-        if (data.page > data?.total_pages) {
-          setCurrentPage(data?.total_pages);
-        }
-        if (currentPage > data?.total_pages) {
-          setCurrentPage(data.total_pages);
-          return;
-        }
-        setData(data.results);
+        // if (data.page > data?.total_pages) {
+        //   setCurrentPage(data?.total_pages);
+        // }
+        // if (currentPage > data?.total_pages) {
+        //   setCurrentPage(data.total_pages);
+        //   return;
+        // }
+        setData(data?.results);
         setNextPagePresent(data?.hasNextPage);
         setLoading(false);
       } catch (error) {
@@ -72,7 +77,7 @@ const CategorywisePage = ({ categoryDiv, categoryPage = null }: any) => {
         setLoading(false);
       }
     };
-    setCurrentPage(1);
+    // setCurrentPage(1);
     fetchData();
   }, [categoryType, category, currentPage, trigger]);
 
@@ -107,32 +112,17 @@ const CategorywisePage = ({ categoryDiv, categoryPage = null }: any) => {
         >
           Recently-Updated
         </p>
-        {categoryPage === null ? (
-          <p
-            className={`${category === "filter" ? styles.active : styles.inactive} ${styles.filter}`}
-            onClick={handleFilterClick}
-          >
-            Filter{" "}
-            {category === "filter" ? (
-              <MdFilterAlt className={styles.active} />
-            ) : (
-              <MdFilterAltOff />
-            )}
-          </p>
-        ) : (
-          <select
-            name="categoryType"
-            id="categoryType"
-            value={categoryType}
-            onChange={(e) => setCategoryType(e.target.value)}
-            className={styles.filter}
-          >
-            <option value="movie">Movie</option>
-            <option value="tv" defaultChecked>
-              Tv
-            </option>
-          </select>
-        )}
+        <p
+          className={`${category === "filter" ? styles.active : styles.inactive} ${styles.filter}`}
+          onClick={handleFilterClick}
+        >
+          Filter{" "}
+          {category === "filter" ? (
+            <MdFilterAlt className={styles.active} />
+          ) : (
+            <MdFilterAltOff />
+          )}
+        </p>
       </div>
       {/* <Filter/> */}
       {showFilter && (
@@ -140,28 +130,35 @@ const CategorywisePage = ({ categoryDiv, categoryPage = null }: any) => {
           categoryType={categoryType}
           setShowFilter={setShowFilter}
           setFilterYear={setFilterYear}
-          setFiltercountry={setFiltercountry}
           setFilterGenreList={setFilterGenreList}
           filterGenreList={filterGenreList}
-          filterCountry={filterCountry}
           filterYear={filterYear}
           sortBy={sortBy}
           setSortBy={setSortBy}
           setCategory={setCategory}
           setTrigger={setTrigger}
           trigger={trigger}
+          foramt={format}
+          setFormat={setFormat}
+          season={season}
+          setSeason={setSeason}
+          animeStatus={animeStatus}
+          setAnimeStatus={setAnimeStatus}
         />
       )}
       <div className={styles.movieList}>
-        {data.map((ele: any) => {
+        {data?.map((ele: any) => {
           return <MovieCardSmall data={ele} media_type={categoryType} />;
         })}
-        {data?.length === 0 &&
-          dummyList.map((ele) => <Skeleton className={styles.loading} />)}
+        {data?.length === 0 && filterGenreList === "" ? (
+          dummyList.map((ele) => <Skeleton className={styles.loading} />)
+        ) : (
+          <p>No data Found</p>
+        )}
         {/* {data?.total_results === 0 &&
           <h1>No Data Found</h1>} */}
       </div>
-      <div className={styles.jumpTo}>
+      {/* <div className={styles.jumpTo}>
         <h3>Jump to</h3>
         <input
           type="number"
@@ -174,10 +171,16 @@ const CategorywisePage = ({ categoryDiv, categoryPage = null }: any) => {
             if (e.target.value === "") setCurrentPage(e.target.value);
             else if (e.target.value === "0") {
               toast.error(`Page number should be greater than 0`);
-            } else setCurrentPage(e.target.value);
+            } else if (e.target.value <= totalPage)
+              setCurrentPage(e.target.value);
+            else {
+              toast.error(
+                `Page number should be less than Total pages: ${totalPage}`,
+              );
+            }
           }}
         />
-      </div>
+      </div> */}
       <ReactPaginate
         containerClassName={styles.pagination}
         pageClassName={styles.page_item}
