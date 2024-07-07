@@ -13,6 +13,7 @@ const Carousel = ({
   mobileHeight,
   desktopHeight,
   objectFit,
+  trailer,
 }: any) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState("");
@@ -133,39 +134,52 @@ const Carousel = ({
         </AnimatePresence> */}
 
         {/* react-lazy-load-image-component */}
-        <AnimatePresence mode="sync">
-          <motion.div
-            key={currentIndex}
-            initial={direction === "right" ? "hiddenRight" : "hiddenLeft"}
-            animate="visible"
-            exit="exit"
-            variants={slideVariants}
-            className={`${imageLoaded ? "skeleton" : null} ${styles.img}`}
-          >
-            <LazyLoadImage
-              // useIntersectionObserver={true}
-              effect="opacity"
+        {trailer !== undefined ? (
+          <div className={styles.YTplayer}>
+            <iframe
+              width="560"
+              height="315"
+              src={`https://www.youtube.com/embed/${trailer}?autoplay=1&mute=1&controls=0&suggestion=0&showinfo=0&rel=0`}
+              allow="autoplay; clipboard-write; encrypted-media; gyroscope;"
+              allowFullScreen
+            ></iframe>
+            <div className={styles.stopPropagation}></div>
+          </div>
+        ) : (
+          <AnimatePresence mode="sync">
+            <motion.div
               key={currentIndex}
-              alt={"carousel"}
-              src={`${imagePlaceholder ? "/images/logo.svg" : images[currentIndex]}`}
-              className={`${!imageLoaded ? "skeleton" : null}`}
-              // onLoad={() => {
-              //   setImageLoaded(true);
-              // }}
-              onLoad={() => {
-                setTimeout(() => {
-                  setImageLoaded(true);
-                }, 100);
-              }}
-              onError={(e) => {
-                // console.log({ e });
-                setImagePlaceholder(true);
-              }}
-              loading="lazy"
-              // style={imageLoaded ? { opacity: 1 } : { opacity: 0 }}
-            />
-          </motion.div>
-        </AnimatePresence>
+              initial={direction === "right" ? "hiddenRight" : "hiddenLeft"}
+              animate="visible"
+              exit="exit"
+              variants={slideVariants}
+              className={`${imageLoaded ? "skeleton" : null} ${styles.img}`}
+            >
+              <LazyLoadImage
+                // useIntersectionObserver={true}
+                effect="opacity"
+                key={currentIndex}
+                alt={"carousel"}
+                src={`${imagePlaceholder ? "/images/logo.svg" : images[currentIndex]}`}
+                className={`${!imageLoaded ? "skeleton" : null}`}
+                // onLoad={() => {
+                //   setImageLoaded(true);
+                // }}
+                onLoad={() => {
+                  setTimeout(() => {
+                    setImageLoaded(true);
+                  }, 100);
+                }}
+                onError={(e) => {
+                  // console.log({ e });
+                  setImagePlaceholder(true);
+                }}
+                loading="lazy"
+                // style={imageLoaded ? { opacity: 1 } : { opacity: 0 }}
+              />
+            </motion.div>
+          </AnimatePresence>
+        )}
         <div className={styles.slide_direction}>
           <BsCaretLeftFill className={styles.left} onClick={handlePrevious} />
 

@@ -45,6 +45,28 @@
 .loaded {
   opacity: 1 !important;
 }
+
+.YTplayer {
+  height: 100%;
+  width: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  user-select: none;
+  .stopPropagation {
+    height: 120%;
+    width: 120%;
+    background: transparent;
+    position: absolute;
+  }
+  iframe {
+    position: absolute;
+    height: 120%;
+    width: 120%;
+  }
+}
+
 @media (max-width: 769px) {
   .carousel_images,
   .carousel_images .img,

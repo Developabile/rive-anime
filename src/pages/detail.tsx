@@ -175,6 +175,7 @@ const DetailPage = () => {
               mobileHeight="60vh"
               desktopHeight="95vh"
               objectFit={"cover"}
+              trailer={trailer?.id}
             />
           ) : (
             <Skeleton className={styles.CarouselLoading} />
