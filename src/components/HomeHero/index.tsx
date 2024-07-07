@@ -100,8 +100,14 @@ const HomeHero = () => {
     setBookmarked(!bookmarked);
   };
   const handleShare = () => {
-    const url = `/detail?type=${data[index].type?.toLowerCase()}&id=${data[index].id}`;
-    navigatorShare({ text: data[index].title?.english, url: url });
+    const url = `/detail?type=${data[index]?.type?.toLowerCase()}&id=${data[index]?.id}`;
+    navigatorShare({
+      text:
+        data[index].title?.english ||
+        data[index].title?.userPreferred ||
+        data[index].title?.romaji,
+      url: url,
+    });
   };
   return (
     <div className={styles.HomeHero}>

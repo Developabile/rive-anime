@@ -138,8 +138,12 @@ const DetailPage = () => {
     setBookmarked(!bookmarked);
   };
   const handleShare = () => {
-    const url = `/detail?type=${type}&id=${id}`;
-    navigatorShare({ text: data.title, url: url });
+    const url = `/detail?type=${data?.type?.toLowerCase()}&id=${data?.id}`;
+    navigatorShare({
+      text:
+        data.title?.english || data.title?.userPreferred || data.title?.romaji,
+      url: url,
+    });
   };
 
   return (

@@ -312,8 +312,8 @@ const HomeListAll = () => {
           <MdChevronLeft
             onClick={() => {
               document
-                .querySelectorAll(`.${styles.HomeListSection}`)
-                [recommendations.length > 0 ? 1 : 0].scrollBy(-700, 0);
+                .querySelectorAll(`.${styles.HomeListSection}`)[0]
+                .scrollBy(-700, 0);
             }}
             data-tooltip-id="tooltip"
             data-tooltip-content="Swipe Left"
@@ -322,8 +322,8 @@ const HomeListAll = () => {
           <MdChevronRight
             onClick={() => {
               document
-                .querySelectorAll(`.${styles.HomeListSection}`)
-                [recommendations.length > 0 ? 1 : 0].scrollBy(700, 0);
+                .querySelectorAll(`.${styles.HomeListSection}`)[0]
+                .scrollBy(700, 0);
             }}
             data-tooltip-id="tooltip"
             data-tooltip-content="Swipe Right"
@@ -345,8 +345,8 @@ const HomeListAll = () => {
           <MdChevronLeft
             onClick={() => {
               document
-                .querySelectorAll(`.${styles.HomeListSection}`)
-                [recommendations.length > 0 ? 2 : 1].scrollBy(-700, 0);
+                .querySelectorAll(`.${styles.HomeListSection}`)[1]
+                .scrollBy(-700, 0);
             }}
             data-tooltip-id="tooltip"
             data-tooltip-content="Swipe Left"
@@ -355,8 +355,8 @@ const HomeListAll = () => {
           <MdChevronRight
             onClick={() => {
               document
-                .querySelectorAll(`.${styles.HomeListSection}`)
-                [recommendations.length > 0 ? 2 : 1].scrollBy(700, 0);
+                .querySelectorAll(`.${styles.HomeListSection}`)[1]
+                .scrollBy(700, 0);
             }}
             data-tooltip-id="tooltip"
             data-tooltip-content="Swipe Right"
@@ -378,8 +378,8 @@ const HomeListAll = () => {
           <MdChevronLeft
             onClick={() => {
               document
-                .querySelectorAll(`.${styles.HomeListSection}`)
-                [recommendations.length > 0 ? 3 : 2].scrollBy(-700, 0);
+                .querySelectorAll(`.${styles.HomeListSection}`)[2]
+                .scrollBy(-700, 0);
             }}
             data-tooltip-id="tooltip"
             data-tooltip-content="Swipe Left"
@@ -388,8 +388,8 @@ const HomeListAll = () => {
           <MdChevronRight
             onClick={() => {
               document
-                .querySelectorAll(`.${styles.HomeListSection}`)
-                [recommendations.length > 0 ? 3 : 2].scrollBy(700, 0);
+                .querySelectorAll(`.${styles.HomeListSection}`)[2]
+                .scrollBy(700, 0);
             }}
             data-tooltip-id="tooltip"
             data-tooltip-content="Swipe Right"
@@ -411,8 +411,8 @@ const HomeListAll = () => {
           <MdChevronLeft
             onClick={() => {
               document
-                .querySelectorAll(`.${styles.HomeListSection}`)
-                [recommendations.length > 0 ? 4 : 3].scrollBy(-700, 0);
+                .querySelectorAll(`.${styles.HomeListSection}`)[3]
+                .scrollBy(-700, 0);
             }}
             data-tooltip-id="tooltip"
             data-tooltip-content="Swipe Left"
@@ -421,8 +421,8 @@ const HomeListAll = () => {
           <MdChevronRight
             onClick={() => {
               document
-                .querySelectorAll(`.${styles.HomeListSection}`)
-                [recommendations.length > 0 ? 4 : 3].scrollBy(700, 0);
+                .querySelectorAll(`.${styles.HomeListSection}`)[3]
+                .scrollBy(700, 0);
             }}
             data-tooltip-id="tooltip"
             data-tooltip-content="Swipe Right"
@@ -444,8 +444,8 @@ const HomeListAll = () => {
           <MdChevronLeft
             onClick={() => {
               document
-                .querySelectorAll(`.${styles.HomeListSection}`)
-                [recommendations.length > 0 ? 5 : 4].scrollBy(-700, 0);
+                .querySelectorAll(`.${styles.HomeListSection}`)[4]
+                .scrollBy(-700, 0);
             }}
             data-tooltip-id="tooltip"
             data-tooltip-content="Swipe Left"
@@ -454,8 +454,8 @@ const HomeListAll = () => {
           <MdChevronRight
             onClick={() => {
               document
-                .querySelectorAll(`.${styles.HomeListSection}`)
-                [recommendations.length > 0 ? 5 : 4].scrollBy(700, 0);
+                .querySelectorAll(`.${styles.HomeListSection}`)[4]
+                .scrollBy(700, 0);
             }}
             data-tooltip-id="tooltip"
             data-tooltip-content="Swipe Right"
@@ -478,7 +478,7 @@ const HomeListAll = () => {
             onClick={() => {
               document
                 .querySelectorAll(`.${styles.HomeListSection}`)
-              [recommendations.length > 0 ? 6 : 5].scrollBy(-700, 0);
+              [ 5].scrollBy(-700, 0);
             }}
             data-tooltip-id="tooltip"
             data-tooltip-content="Swipe Left"
@@ -488,7 +488,7 @@ const HomeListAll = () => {
             onClick={() => {
               document
                 .querySelectorAll(`.${styles.HomeListSection}`)
-              [recommendations.length > 0 ? 6 : 5].scrollBy(700, 0);
+              [ 5].scrollBy(700, 0);
             }}
             data-tooltip-id="tooltip"
             data-tooltip-content="Swipe Right"
