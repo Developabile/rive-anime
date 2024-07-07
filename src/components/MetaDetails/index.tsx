@@ -90,7 +90,7 @@ const MetaDetails = ({ id, type, data }: any) => {
                     <div className={styles.episodeHeader}>
                       <h4>
                         {/* {`EP ${ele.number}`} */}
-                        {`${ele?.title ? ele?.title : ele?.number}`}
+                        {`${ele?.title?.includes("EP") ? ele?.title : ele?.title ? `EP ${ele?.number}: ${ele?.title}` : ele?.number}`}
                       </h4>
                     </div>
                   </Link>
@@ -154,27 +154,31 @@ const MetaDetails = ({ id, type, data }: any) => {
                   <h3>Show Details</h3>
                   {data?.status && <p> Status : {data?.status}</p>}
                   {data?.subOrDub && <p> Type : {data?.subOrDub}</p>}
-                  {data?.number_of_seasons && (
-                    <p> Total Seasons : {data?.number_of_seasons}</p>
+                  {data?.season && (
+                    <p> Seasons : {data?.season?.toLowerCase()}</p>
                   )}
-                  {data?.number_of_episodes && (
-                    <p> Total Episodes : {data?.number_of_episodes}</p>
+                  {data?.totalEpisodes > 0 && (
+                    <p> Total Episodes : {data?.totalEpisodes}</p>
                   )}
-                  {data?.next_episode_to_air !== null ? (
+                  {data?.nextAiringEpisode !== null ? (
                     <p>
                       {" "}
-                      Next Episode to Air :{" "}
-                      {data?.next_episode_to_air?.episode_number} (
-                      {new Date(data?.next_episode_to_air?.air_date).getDate()}{" "}
+                      Next Episode to Air : {data?.nextAiringEpisode?.episode} (
+                      {new Date(
+                        new Date().getTime() +
+                          data?.nextAiringEpisode?.timeUntilAiring,
+                      ).getDate()}{" "}
                       {
                         monthNames[
                           new Date(
-                            data?.next_episode_to_air?.air_date,
+                            new Date().getTime() +
+                              data?.nextAiringEpisode?.timeUntilAiring,
                           ).getMonth()
                         ]
                       }{" "}
                       {new Date(
-                        data?.next_episode_to_air?.air_date,
+                        new Date().getTime() +
+                          data?.nextAiringEpisode?.timeUntilAiring,
                       ).getFullYear()}
                       )
                     </p>

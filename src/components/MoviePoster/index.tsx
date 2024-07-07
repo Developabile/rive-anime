@@ -14,7 +14,7 @@ const MoviePoster = ({ data, media_type }: any) => {
 
   return (
     <Link
-      href={`/detail?type=${data?.type}&id=${data?.id}`}
+      href={`/detail?type=${data?.type?.toLowerCase() === "movie" ? "movie" : "tv"}&id=${data?.id}`}
       className={styles.MovieCardSmall}
       aria-label={data?.name || "poster"}
     >

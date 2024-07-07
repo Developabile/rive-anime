@@ -118,7 +118,7 @@ const WatchDetails = ({
                     <div className={styles.episodeHeader}>
                       <h4>
                         {/* {`EP ${ele.number}`} */}
-                        {`${ele?.title ? ele?.title : ele?.number}`}
+                        {`${ele?.title?.includes("EP") ? ele?.title : ele?.title ? `EP ${ele?.number}: ${ele?.title}` : ele?.number}`}
                       </h4>
                     </div>
                   </Link>

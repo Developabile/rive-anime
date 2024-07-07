@@ -45,7 +45,7 @@ const SettingsPage = ({
     const res = await fetchRandom();
     console.log({ res });
     if (res?.type && res?.id) {
-      push(`/detail?type=${res.type}&id=${res.id}`);
+      push(`/detail?type=${res?.type}&id=${res?.id}`);
     }
   };
   return (
@@ -138,24 +138,10 @@ const SettingsPage = ({
         <h1>App Center</h1>
         <div className={styles.group}>
           <Link
-            href="/anime"
-            data-tooltip-id="tooltip"
-            data-tooltip-html="Go to Anime Page"
-          >
-            Anime
-          </Link>
-          <Link
-            href="/kdrama"
-            data-tooltip-id="tooltip"
-            data-tooltip-html="Go to K-Drama Page"
-          >
-            K-Drama
-          </Link>
-          <Link
             href=""
             onClick={handleRandom}
             data-tooltip-id="tooltip"
-            data-tooltip-html="Random Movie/ Tv Show <span class='tooltip-btn'>CTRL + SHIFT + R</span>"
+            data-tooltip-html="Random Anime <span class='tooltip-btn'>CTRL + SHIFT + R</span>"
           >
             Random
           </Link>
@@ -176,18 +162,11 @@ const SettingsPage = ({
           <Link href="mailto:kumarashishranjan4971@hotmail.com">
             Contact Us
           </Link>
-          <Link
-            href="/recommendation"
-            data-tooltip-id="tooltip"
-            data-tooltip-content="More Detailed Recommendation"
-          >
-            Recommendation
-          </Link>
           {/* <Link href="/contact">Contact Us</Link> */}
         </div>
         <h1>Links</h1>
         <div className={styles.group}>
-          <Link href={"https://github.com/Developabile/rive-next"}>
+          <Link href={"https://github.com/Developabile/rive-anime"}>
             <FaGithub /> Github
           </Link>
           <Link href={"https://discord.gg/6xJmJja8fV"}>
