@@ -49,28 +49,28 @@ const Watch = () => {
   useEffect(() => {
     setNonEmbedSourcesIndex("");
     if (
-      localStorage.getItem("RiveStreamEmbedMode") !== undefined &&
-      localStorage.getItem("RiveStreamEmbedMode") !== null
+      localStorage.getItem("RiveKunEmbedMode") !== undefined &&
+      localStorage.getItem("RiveKunEmbedMode") !== null
     )
       setEmbedMode(
-        JSON.parse(localStorage.getItem("RiveStreamEmbedMode") || "false"),
+        JSON.parse(localStorage.getItem("RiveKunEmbedMode") || "false"),
       );
     else setEmbedMode(false);
-    const latestAgg: any = localStorage.getItem("RiveStreamLatestAgg");
+    const latestAgg: any = localStorage.getItem("RiveKunLatestAgg");
     if (latestAgg !== null && latestAgg !== undefined) setSource(latestAgg);
     setLoading(true);
     setType(params.get("type"));
     setId(params.get("id"));
     setSeason(params.get("season"));
     setEpisode(params.get("episode"));
-    setContinueWatching({ type: params.get("type"), id: params.get("id") });
+    setContinueWatching({ type: params.get("type"), id: params.get("season") });
   }, [params, id, season, episode]);
 
   useEffect(() => {
     if (embedMode !== undefined && embedMode !== null)
-      localStorage.setItem("RiveStreamEmbedMode", embedMode);
+      localStorage.setItem("RiveKunEmbedMode", embedMode);
     if (embedMode === true) {
-      const latestAgg: any = localStorage.getItem("RiveStreamLatestAgg");
+      const latestAgg: any = localStorage.getItem("RiveKunLatestAgg");
       if (latestAgg !== null && latestAgg !== undefined) setSource(latestAgg);
       toast.info(
         <div>
@@ -216,7 +216,7 @@ const Watch = () => {
             value={source}
             onChange={(e) => {
               setSource(e.target.value);
-              localStorage.setItem("RiveStreamLatestAgg", e.target.value);
+              localStorage.setItem("RiveKunLatestAgg", e.target.value);
             }}
           >
             <option value="PRO" defaultChecked>
@@ -258,7 +258,7 @@ const Watch = () => {
           value={embedMode}
           onChange={(e) => {
             setEmbedMode(JSON.parse(e.target.value));
-            localStorage.setItem("RiveStreamEmbedMode", e.target.value);
+            localStorage.setItem("RiveKunEmbedMode", e.target.value);
           }}
         >
           <option value="true">Embed Mode</option>

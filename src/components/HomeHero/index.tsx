@@ -86,7 +86,7 @@ const HomeHero = () => {
 
     setBookmarks({
       userId: user,
-      type: data[index]?.type?.toLowerCase(),
+      type: data[index]?.type?.toLowerCase() === "movie" ? "movie" : "tv",
       id: data[index].id,
     });
     setBookmarked(!bookmarked);
@@ -94,7 +94,7 @@ const HomeHero = () => {
   const handleBookmarkRemove = () => {
     removeBookmarks({
       userId: user,
-      type: data[index]?.type?.toLowerCase(),
+      type: data[index]?.type?.toLowerCase() === "movie" ? "movie" : "tv",
       id: data[index].id,
     });
     setBookmarked(!bookmarked);

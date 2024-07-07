@@ -26,9 +26,7 @@ const WatchDetails = ({
   episode,
   setWatchDetails,
 }: any) => {
-  const [category, setCategory] = useState<any>(
-    type === "tv" ? "episodes" : "related",
-  ); // latest, trending, topRated
+  const [category, setCategory] = useState<any>("episodes"); // latest, trending, topRated
   const [categoryData, setCategoryData] = useState<any>();
   const [imageLoading, setImageLoading] = useState<any>(true);
   const [reviewDetail, setReviewDetail] = useState<any>(null);
@@ -113,7 +111,7 @@ const WatchDetails = ({
               categoryData?.episodes?.map((ele: any) => {
                 return (
                   <Link
-                    href={`/watch?type=tv&id=${ele?.id}&season=${season}&episode=${ele?.number}`}
+                    href={`/watch?type=${categoryData?.type?.toLowerCase() === "movie" ? "movie" : "tv"}&id=${ele?.id}&season=${season}&episode=${ele?.number}`}
                     className={`${styles.episode} ${parseInt(ele?.number) === parseInt(episode) ? styles.highlightEpisode : null}`}
                     onClick={(e) => e.stopPropagation()}
                   >

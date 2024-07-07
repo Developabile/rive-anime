@@ -4,7 +4,7 @@
 // }
 
 export const getContinueWatching = () => {
-  const values: any = localStorage.getItem("RiveStreamContinueWatching");
+  const values: any = localStorage.getItem("RiveKunContinueWatching");
   return JSON.parse(values);
 };
 
@@ -16,7 +16,7 @@ export const setContinueWatching = ({ type, id }: any) => {
     values[type]?.push(id);
     // if (values[type]?.length > 20) values[type].shift();
     values[type] = values[type]?.reverse();
-    localStorage.setItem("RiveStreamContinueWatching", JSON.stringify(values));
+    localStorage.setItem("RiveKunContinueWatching", JSON.stringify(values));
   }
   // special for continue watching, elements already present are removed then added at the very begining of the list
   else {
@@ -29,7 +29,7 @@ export const removeContinueWatching = ({ type, id }: any) => {
   var values = getContinueWatching() || { movie: [], tv: [] };
   if (values[type]?.includes(id)) {
     values[type] = values[type].filter((ele: any) => ele !== id); // Update the array after filtering
-    localStorage.setItem("RiveStreamContinueWatching", JSON.stringify(values));
+    localStorage.setItem("RiveKunContinueWatching", JSON.stringify(values));
   }
 };
 

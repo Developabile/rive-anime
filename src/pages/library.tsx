@@ -58,7 +58,7 @@ const Library = () => {
       try {
         for (const ele of ids) {
           const data = await axiosFetch({
-            requestID: `${subCategory}Data`,
+            requestID: `infoAnime`,
             id: ele,
           });
           if (data !== undefined) await arr.push(data);
@@ -166,7 +166,10 @@ const Library = () => {
                     data-tooltip-id="tooltip"
                     data-tooltip-content="Remove from Watchlist"
                     onClick={() =>
-                      handleWatchlistremove({ type: subCategory, id: ele?.id })
+                      handleWatchlistremove({
+                        type: subCategory === "movie" ? "movie" : "tv",
+                        id: ele?.id,
+                      })
                     }
                   />
                 </div>

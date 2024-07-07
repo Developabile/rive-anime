@@ -117,11 +117,19 @@ const DetailPage = () => {
       if (data !== undefined && data !== null) {
         if (user !== undefined && user !== null)
           setBookmarked(
-            await checkBookmarks({ userId: user, type: type, id: data.id }),
+            await checkBookmarks({
+              userId: user,
+              type: data?.type?.toLowerCase() === "movie" ? "movie" : "tv",
+              id: data.id,
+            }),
           );
         else
           setBookmarked(
-            await checkBookmarks({ userId: null, type: type, id: data.id }),
+            await checkBookmarks({
+              userId: null,
+              type: data?.type?.toLowerCase() === "movie" ? "movie" : "tv",
+              id: data.id,
+            }),
           );
         // console.log(checkBookmarks({ userId: user, type: type, id: data.id }));
       }
@@ -130,11 +138,19 @@ const DetailPage = () => {
   }, [index, data, user]);
 
   const handleBookmarkAdd = () => {
-    setBookmarks({ userId: user, type: type, id: data.id });
+    setBookmarks({
+      userId: user,
+      type: data?.type?.toLowerCase() === "movie" ? "movie" : "tv",
+      id: data.id,
+    });
     setBookmarked(!bookmarked);
   };
   const handleBookmarkRemove = () => {
-    removeBookmarks({ userId: user, type: type, id: data.id });
+    removeBookmarks({
+      userId: user,
+      type: data?.type?.toLowerCase() === "movie" ? "movie" : "tv",
+      id: data.id,
+    });
     setBookmarked(!bookmarked);
   };
   const handleShare = () => {
@@ -204,7 +220,7 @@ const DetailPage = () => {
                       className={styles.links}
                       data-tooltip-id="tooltip"
                       data-tooltip-content="Watch Online"
-                      href={`${`${data?.episodes?.length > 0 && `/watch?type=tv&id=${data?.episodes[0]?.id}&season=${id}&episode=${data?.episodes[0]?.number}`}`}`}
+                      href={`${`${data?.episodes?.length > 0 && `/watch?type=${data?.type?.toLowerCase() === "movie" ? "movie" : "tv"}&id=${data?.episodes[0]?.id}&season=${id}&episode=${data?.episodes[0]?.number}`}`}`}
                     >
                       watch <FaPlay className={styles.IconsMobileNone} />
                     </Link>

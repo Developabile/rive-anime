@@ -83,7 +83,7 @@ const MetaDetails = ({ id, type, data }: any) => {
               data?.episodes?.map((ele: any) => {
                 return (
                   <Link
-                    href={`/watch?type=tv&id=${ele?.id}&season=${id}&episode=${ele?.number}`}
+                    href={`/watch?type=${data?.type?.toLowerCase() === "movie" ? "movie" : "tv"}&id=${ele?.id}&season=${id}&episode=${ele?.number}`}
                     className={`${styles.episode}`}
                     onClick={(e) => e.stopPropagation()}
                   >
