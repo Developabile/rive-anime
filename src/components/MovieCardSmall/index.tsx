@@ -77,7 +77,8 @@ const MovieCardSmall = ({ data, media_type }: any) => {
         />
       </div>
       <p>
-        {data?.title?.english || data?.title?.userPreferred || data?.native}
+        {data?.title?.english || data?.title?.userPreferred || data?.native}{" "}
+        {data?.subOrDub ? `(${data?.subOrDub})` : null}
       </p>
     </Link>
   );

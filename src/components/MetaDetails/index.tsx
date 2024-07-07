@@ -68,7 +68,7 @@ const MetaDetails = ({ id, type, data }: any) => {
             className={`${category === "description" ? styles.active : styles.inactive}`}
             onClick={() => setCategory("description")}
           >
-            description
+            Overview
           </p>
           <p
             className={`${category === "related" ? styles.active : styles.inactive}`}
@@ -153,6 +153,7 @@ const MetaDetails = ({ id, type, data }: any) => {
                 <>
                   <h3>Show Details</h3>
                   {data?.status && <p> Status : {data?.status}</p>}
+                  {data?.subOrDub && <p> Type : {data?.subOrDub}</p>}
                   {data?.number_of_seasons && (
                     <p> Total Seasons : {data?.number_of_seasons}</p>
                   )}

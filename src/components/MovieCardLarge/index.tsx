@@ -19,7 +19,7 @@ const MovieCardLarge = ({ data, media_type, genresMovie, genresTv }: any) => {
   const [genreListTv, setGenreListTv] = useState(genresTv);
   const [loading, setLoading] = useState(true);
   const [imagePlaceholder, setImagePlaceholder] = useState(false);
-  const year = new Date(data?.release_date).getFullYear();
+  const year = new Date(data?.releaseDate).getFullYear();
   const lang = data?.original_language;
   let Genres: Array<string> = [];
 
@@ -109,13 +109,14 @@ const MovieCardLarge = ({ data, media_type, genresMovie, genresTv }: any) => {
           )}
         </h1>
         <p>
-          {capitalizeFirstLetter(data?.type?.toLowerCase() || media_type)}
+          {capitalizeFirstLetter(data?.type?.toLowerCase() || "")}
           {data?.rating ? ` • ${data?.rating.toFixed(0)}%` : null}
-          {data?.releaseDate
-            ? ` • ${data?.releaseDate}`
-            : ` • ${data?.episodes}`}{" "}
+          {!Number.isNaN(year)
+            ? ` • ${year}`
+            : data?.episodes && ` • ${data?.episodes}`}{" "}
           {data?.status !== undefined ? ` • ${data?.status}` : null}
         </p>
+        <p>{data?.subOrDub ? `(${data?.subOrDub})` : null}</p>
         {data?.genres?.join(
           ", ",
         ) // || <Skeleton />
