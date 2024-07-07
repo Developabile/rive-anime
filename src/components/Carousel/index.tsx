@@ -34,7 +34,7 @@ const Carousel = ({
       objectFit,
     );
     // if (imageArr.length === 0) {
-    //   setImages(["/images/logo.svg"]);
+    //   setImages(["/images/logo512.png"]);
     // }
     const Interval = setInterval(() => {
       // setImages(imageArr);
@@ -46,7 +46,7 @@ const Carousel = ({
   });
   useEffect(() => {
     if (imageArr.length === 0) {
-      setImages(["/images/logo.svg"]);
+      setImages(["/images/logo512.png"]);
     } else {
       setImages(imageArr);
     }
@@ -110,7 +110,7 @@ const Carousel = ({
           <motion.img
             key={currentIndex}
             alt={"carousel"}
-            src={`${imagePlaceholder ? "/images/logo.svg" : images[currentIndex]}`}
+            src={`${imagePlaceholder ? "/images/logo512.png" : images[currentIndex]}`}
             initial={direction === "right" ? "hiddenRight" : "hiddenLeft"}
             animate="visible"
             exit="exit"
@@ -160,7 +160,7 @@ const Carousel = ({
                 effect="opacity"
                 key={currentIndex}
                 alt={"carousel"}
-                src={`${imagePlaceholder ? "/images/logo.svg" : images[currentIndex]}`}
+                src={`${imagePlaceholder ? "/images/logo512.png" : images[currentIndex]}`}
                 className={`${!imageLoaded ? "skeleton" : null}`}
                 // onLoad={() => {
                 //   setImageLoaded(true);

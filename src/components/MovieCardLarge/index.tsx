@@ -52,7 +52,7 @@ const MovieCardLarge = ({ data, media_type, genresMovie, genresTv }: any) => {
         {/* <AnimatePresence mode="sync">
           <motion.img
             key={data?.id}
-            src={`${imagePlaceholder ? "/images/logo.svg" : (data?.image !== null && data?.image !== undefined) || (data?.profile_path !== null && data?.profile_path !== undefined) || (data?.still_path !== null && data?.still_path !== undefined) ? process.env.NEXT_PUBLIC_TMBD_IMAGE_URL + (data?.image || data?.profile_path || data?.still_path) || null : "/images/logo.svg"}`}
+            src={`${imagePlaceholder ? "/images/logo512.png" : (data?.image !== null && data?.image !== undefined) || (data?.profile_path !== null && data?.profile_path !== undefined) || (data?.still_path !== null && data?.still_path !== undefined) ? process.env.NEXT_PUBLIC_TMBD_IMAGE_URL + (data?.image || data?.profile_path || data?.still_path) || null : "/images/logo512.png"}`}
             initial={{ opacity: 0 }}
             animate={{
               opacity: imageLoading ? 0 : 1,

@@ -4,7 +4,7 @@
 <div align="center">
 <p>
 
-<image src="./public/images/logo.svg" height="300"/>
+<image src="./public/images/logo512.png" height="300"/>
 </p>
 Your Portal to Anime Adventures
 </div>

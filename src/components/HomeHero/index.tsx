@@ -45,7 +45,7 @@ const HomeHero = () => {
         response.results.map((ele: any) => {
           arr.push(ele?.cover);
         });
-        if (arr.length === 0) arr.push("/images/logo.svg");
+        if (arr.length === 0) arr.push("/images/logo512.png");
         setImages(arr);
         setLoading(false);
       } catch (error) {

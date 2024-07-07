@@ -28,7 +28,7 @@ const MovieCardSmall = ({ data, media_type }: any) => {
         {/* <AnimatePresence mode="sync">
           <motion.img
             key={data?.id}
-            src={`${imagePlaceholder ? "/images/logo.svg" : data?.image !== null && data?.image !== undefined ? process.env.NEXT_PUBLIC_TMBD_IMAGE_URL + data?.image : "/images/logo.svg"}`}
+            src={`${imagePlaceholder ? "/images/logo512.png" : data?.image !== null && data?.image !== undefined ? process.env.NEXT_PUBLIC_TMBD_IMAGE_URL + data?.image : "/images/logo512.png"}`}
             initial={{ opacity: 0 }}
             animate={{
               opacity: imageLoading ? 0 : 1,
