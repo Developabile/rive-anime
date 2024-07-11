@@ -14,9 +14,11 @@ const SettingsPage = ({
   mode,
   theme,
   ascent_color,
+  provider,
   setMode,
   setTheme,
   setAscent_color,
+  setProvider,
 }: any) => {
   const [user, setUser] = useState<any>(false);
   const [loading, setLoading] = useState(true);
@@ -38,6 +40,8 @@ const SettingsPage = ({
     const prevVal = { mode, theme, ascent_color };
     if (type === "mode") setSettings({ values: { ...prevVal, mode: value } });
     if (type === "theme") setSettings({ values: { ...prevVal, theme: value } });
+    if (type === "provider")
+      setSettings({ values: { ...prevVal, provider: value } });
     if (type === "ascent_color")
       setSettings({ values: { ...prevVal, ascent_color: value } });
   };
@@ -51,7 +55,12 @@ const SettingsPage = ({
   return (
     <div className={`${styles.settingsPage} ${styles.authPage}`}>
       <div className={styles.logo}>
-        <img src="/images/logo512.png" alt="logo" />
+        <img
+          src="/images/logo512.png"
+          alt="logo"
+          data-tooltip-id="tooltip"
+          data-tooltip-content="RiveKun"
+        />
         <p>Your Portal to Anime Adventures</p>
       </div>
       <div className={styles.settings}>
@@ -132,6 +141,25 @@ const SettingsPage = ({
               <option value="#ff9800">Orange</option>
               <option value="#ff5722">Deep Orange</option>
               <option value="#795548">Brown</option>
+            </select>
+          </div>
+          <div>
+            <label htmlFor="provider">Provider</label>
+            <select
+              name="provider"
+              id="provider"
+              value={provider}
+              onChange={(e) => {
+                setProvider(e.target.value);
+                handleSelect({ type: "provider", value: e.target.value });
+              }}
+            >
+              <option value="gogoanime" defaultChecked>
+                GogoAnime
+              </option>
+              <option value="zoro">Zoro</option>
+              <option value="enime">Enime</option>
+              <option value="animefox">Animefox</option>
             </select>
           </div>
         </div>

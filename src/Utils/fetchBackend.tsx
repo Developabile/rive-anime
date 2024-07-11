@@ -1,5 +1,6 @@
 import axios from "axios";
 import { setCache, getCache } from "./clientCache";
+import { getSettings } from "./settings";
 
 interface Fetch {
   requestID: any;
@@ -29,6 +30,11 @@ export default async function axiosFetch({
   year,
   animeStatus,
 }: Fetch) {
+  // console.log(getSettings());
+  const settngs = getSettings();
+  if (settngs?.provider) {
+    provider = settngs?.provider;
+  }
   const request = requestID;
   // const API_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
   const baseURL = "/api/backendfetch";

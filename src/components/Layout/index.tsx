@@ -14,6 +14,7 @@ const Layout = ({ children }: any) => {
   const [theme, setTheme] = useState("system");
   const [mode, setMode] = useState("liquidate");
   const [ascent_color, setAscent_color] = useState("gold");
+  const [provider, setProvider] = useState("gogoanime");
   const [themeColor, setThemeColor] = useState<any>();
   const { push } = useRouter();
 
@@ -31,6 +32,7 @@ const Layout = ({ children }: any) => {
       setTheme(values?.theme);
       setMode(values?.mode);
       setAscent_color(values?.ascent_color);
+      setProvider(values?.provider);
     }
     console.log({ values });
     const prefersDarkMode =
@@ -99,9 +101,11 @@ const Layout = ({ children }: any) => {
             mode={mode}
             theme={theme}
             ascent_color={ascent_color}
+            provider={provider}
             setMode={setMode}
             setTheme={setTheme}
             setAscent_color={setAscent_color}
+            setProvider={setProvider}
           />
         ) : null}
       </div>
