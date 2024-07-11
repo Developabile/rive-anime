@@ -1,6 +1,7 @@
 import "@/styles/globals.scss";
 import Layout from "@/components/Layout";
 import Head from "next/head";
+import Script from "next/script";
 import { Toaster, toast } from "sonner";
 import "@/styles/checkbox.scss";
 import "react-tooltip/dist/react-tooltip.css";
@@ -108,6 +109,10 @@ export default function App({ Component, pageProps }: any) {
         <Component {...pageProps} />
       </Layout>
       <GoogleAnalytics gaId={GTag} />
+      <Script
+        disable-devtool-auto
+        src="https://cdn.jsdelivr.net/npm/disable-devtool"
+      />
     </>
   );
 }

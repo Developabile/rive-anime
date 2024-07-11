@@ -23,7 +23,7 @@ Steps to get the credentials:
 - Under Your apps, click on the Web app (</>) icon to register a new app.
 - Copy the config object's values into your `.env` file.
 
-## 2. Anilist or Consumet API
+## 2. Consumet API
 
 ```.env
   NEXT_PUBLIC_ANILIST_API=
@@ -31,6 +31,8 @@ Steps to get the credentials:
 
 Anilist : https://anilist.gitbook.io/anilist-apiv2-docs/overview/graphql/getting-started  
 Consumet : https://github.com/consumet/api.consumet.org
+
+You can use Anilist API, but here we have used consumet which is based on anilist
 
 ## 3. Video Streaming API
 
@@ -59,7 +61,7 @@ NEXT_PUBLIC_GT_MEASUREMENT_ID=
 Add your Measurement ID from your Google Tag Manager/ Google Analytics, to track websites for Analytics purposes.  
 We are usig Google Analytics with Google Tag Manager to track multiple deployments.  
 This is optional, either add this env variable  
-Or comment out these three lines _(line 13 , 18 & 110)_ in `./src/pages/_app.tsx`:
+Or comment out these three lines _(line 14 , 19 & 111)_ in `./src/pages/_app.tsx`:
 
 ```js
 import { GoogleAnalytics } from "@next/third-parties/google";
