@@ -166,7 +166,9 @@ const DetailPage = () => {
     const url = `/detail?type=${data?.type?.toLowerCase()}&id=${data?.id}`;
     navigatorShare({
       text:
-        data.title?.english || data.title?.userPreferred || data.title?.romaji,
+        data?.title?.english ||
+        data?.title?.userPreferred ||
+        data?.title?.romaji,
       url: url,
     });
   };
@@ -179,7 +181,7 @@ const DetailPage = () => {
         <title>
           RiveKun | Detail{" "}
           {id !== undefined && id !== null
-            ? `| ${data.title?.english || data.title?.userPreferred || data.title?.romaji || id}`
+            ? `| ${data?.title?.english || data?.title?.userPreferred || data?.title?.romaji || id}`
             : null}
         </title>
       </Head>

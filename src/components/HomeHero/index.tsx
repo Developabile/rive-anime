@@ -132,13 +132,14 @@ const HomeHero = () => {
             data-tooltip-id="tooltip"
             data-tooltip-content={
               data[index]?.title?.english ||
-              data[index]?.name?.english ||
+              data[index]?.title?.userPreferred ||
+              data[index]?.title?.romaji ||
               "name"
             }
           >
-            {data[index]?.title?.english || data[index]?.name?.english || (
-              <Skeleton />
-            )}
+            {data[index]?.title?.english ||
+              data[index]?.title?.userPreferred ||
+              data[index]?.title?.romaji || <Skeleton />}
           </h1>
           <div className={styles.HomeHeroMetaRow2}>
             <p className={styles.type}>
