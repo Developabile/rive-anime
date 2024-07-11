@@ -51,8 +51,10 @@ export default async function axiosFetch({
   const sortRes =
     sortArray?.length > 0 ? encodeURIComponent(JSON.stringify(sortArray)) : "";
 
-  // console.log({ genreKeywords });
-  // console.log({ genres });
+  // fixed provider for ONE PIECE or for any other anime with large data
+  if (id === "21") {
+    provider = "zoro";
+  }
 
   const requests: any = {
     trendingAnime: `${baseURL}?requestID=trendingAnime&page=${page}&perPage=${perPage}`,

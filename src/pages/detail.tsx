@@ -48,7 +48,12 @@ const DetailPage = () => {
         const data = await axiosFetch({ requestID: `infoAnime`, id: id });
         setData(data);
         if (typeof data === "string") {
-          toast.info(<div>Data Load Failed due to very large data size</div>);
+          toast.info(
+            <div>
+              Data Load Failed due to very large data size. Change provider from
+              settings
+            </div>,
+          );
         }
         console.log({ data });
         // const Videos = await axiosFetch({ requestID: `${type}Videos`, id: id });
@@ -177,7 +182,7 @@ const DetailPage = () => {
               setIndex={setIndex}
               mobileHeight="60vh"
               desktopHeight="95vh"
-              objectFit={"cover"}
+              objectFit={"contain"}
               trailer={trailer?.id}
             />
           ) : (
@@ -195,7 +200,7 @@ const DetailPage = () => {
               data-tooltip-id="tooltip"
               data-tooltip-content="Rating"
             >
-              {data?.vote_average?.toFixed(1)}
+              {data?.vote_average?.toFixed(0) || data?.rating?.toFixed(0)}%
             </div>
             <MoviePoster data={data} />
           </div>

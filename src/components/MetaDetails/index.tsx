@@ -89,8 +89,8 @@ const MetaDetails = ({ id, type, data }: any) => {
                   >
                     <div className={styles.episodeHeader}>
                       <h4>
-                        {/* {`EP ${ele.number}`} */}
-                        {`${ele?.title?.includes("EP") ? ele?.title : ele?.title ? `EP ${ele?.number}: ${ele?.title}` : ele?.number}`}
+                        {`EP ${ele.number}`}
+                        {/* {`${ele?.title?.includes("EP") ? ele?.title : ele?.title ? `EP ${ele?.number}: ${ele?.title}` : ele?.number}`} */}
                       </h4>
                     </div>
                   </Link>
@@ -160,7 +160,8 @@ const MetaDetails = ({ id, type, data }: any) => {
                   {data?.totalEpisodes > 0 && (
                     <p> Total Episodes : {data?.totalEpisodes}</p>
                   )}
-                  {data?.nextAiringEpisode !== null ? (
+                  {data?.nextAiringEpisode !== null &&
+                  data?.nextAiringEpisode !== undefined ? (
                     <p>
                       {" "}
                       Next Episode to Air : {data?.nextAiringEpisode?.episode} (
@@ -183,7 +184,7 @@ const MetaDetails = ({ id, type, data }: any) => {
                       )
                     </p>
                   ) : null}
-                  {release_date && data?.endDate?.year && (
+                  {release_date && (
                     <p>
                       {" "}
                       Aired :{" "}
