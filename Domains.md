@@ -3,6 +3,7 @@
 | Domain                          | Status |
 | ------------------------------- | ------ |
 | https://rivekun.rivestream.live | ✅     |
+| https://rivekun.pages.dev       | ✅     |
 | https://rivekun.netlify.app     | ✅     |
 
 **Legends**:

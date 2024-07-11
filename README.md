@@ -43,6 +43,7 @@ RiveKun is a cutting-edge platform for streaming Anime online. Our project utili
 <!-- - https://rivestream.tech -->
 
 - https://rivekun.rivestream.live
+- https://rivekun.pages.dev
 - https://rivekun.netlify.app
 
 **connect**:
