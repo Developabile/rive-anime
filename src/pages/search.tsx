@@ -65,7 +65,7 @@ const SearchPage = ({ categoryType }: any) => {
           data = await axiosFetch({ requestID: `trendingAnime` });
           setCurrentPage(1);
         }
-        setData(data.results);
+        setData(data?.results);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -138,8 +138,10 @@ const SearchPage = ({ categoryType }: any) => {
             />
           );
         })}
-        {query.length > 2 && data?.length === 0 ? <h1>No Data Found</h1> : null}
-        {query.length > 2 && data === undefined
+        {query.length >= 2 && data?.length === 0 ? (
+          <h1>No Data Found</h1>
+        ) : null}
+        {query.length >= 2 && data === undefined
           ? dummyList.map((ele) => <Skeleton className={styles.loading} />)
           : null}
         {data === undefined
