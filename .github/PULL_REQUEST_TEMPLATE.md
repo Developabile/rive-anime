@@ -16,8 +16,8 @@ Closes #
 
 - [ ] New Features
 - [ ] ADD Components
-- [ ] ADD Movie Streaming Service
-- [ ] ADD Movie Download Service
+- [ ] ADD Anime Streaming Service
+- [ ] ADD Anime Download Service
 - [ ] Bug fix (non-breaking change which fixes an issue)
 - [ ] Docs Update (no-code / low code)
 - [ ] Others

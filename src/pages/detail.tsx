@@ -22,6 +22,7 @@ import { navigatorShare } from "@/Utils/share";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "@/Utils/firebase";
 import { toast } from "sonner";
+import Head from "next/head";
 
 const DetailPage = () => {
   const params = useSearchParams();
@@ -173,122 +174,132 @@ const DetailPage = () => {
   return (
     // carousel
     // detail
-    <div className={styles.DetailPage}>
-      <div className={styles.biggerPic}>
-        {
-          images?.length > 0 ? (
-            <Carousel
-              imageArr={images}
-              setIndex={setIndex}
-              mobileHeight="60vh"
-              desktopHeight="95vh"
-              objectFit={"contain"}
-              trailer={trailer?.id}
-            />
-          ) : (
-            <Skeleton className={styles.CarouselLoading} />
-          ) // if no images array, then use backdrop poster
-        }
-        <div className={styles.curvy}></div>
-        <div className={styles.curvy2}></div>
-        <div className={styles.DetailBanner}>
-          <div className={styles.poster}>
-            <div className={styles.curvy3}></div>
-            <div className={styles.curvy4}></div>
-            <div
-              className={styles.rating}
-              data-tooltip-id="tooltip"
-              data-tooltip-content="Rating"
-            >
-              {data?.vote_average?.toFixed(0) || data?.rating?.toFixed(0)}%
+    <>
+      <Head>
+        <title>
+          RiveKun | Detail{" "}
+          {id !== undefined && id !== null
+            ? `| ${data.title?.english || data.title?.userPreferred || data.title?.romaji || id}`
+            : null}
+        </title>
+      </Head>
+      <div className={styles.DetailPage}>
+        <div className={styles.biggerPic}>
+          {
+            images?.length > 0 ? (
+              <Carousel
+                imageArr={images}
+                setIndex={setIndex}
+                mobileHeight="60vh"
+                desktopHeight="95vh"
+                objectFit={"contain"}
+                trailer={trailer?.id}
+              />
+            ) : (
+              <Skeleton className={styles.CarouselLoading} />
+            ) // if no images array, then use backdrop poster
+          }
+          <div className={styles.curvy}></div>
+          <div className={styles.curvy2}></div>
+          <div className={styles.DetailBanner}>
+            <div className={styles.poster}>
+              <div className={styles.curvy3}></div>
+              <div className={styles.curvy4}></div>
+              <div
+                className={styles.rating}
+                data-tooltip-id="tooltip"
+                data-tooltip-content="Rating"
+              >
+                {data?.vote_average?.toFixed(0) || data?.rating?.toFixed(0)}%
+              </div>
+              <MoviePoster data={data} />
             </div>
-            <MoviePoster data={data} />
-          </div>
-          <div className={styles.HomeHeroMeta}>
-            <h1
-              data-tooltip-id="tooltip"
-              data-tooltip-content={
-                data?.title?.english ||
-                data?.title?.userPreferred ||
-                data?.title?.romaji ||
-                "name"
-              }
-            >
-              {data?.title?.english ||
-                data?.title?.userPreferred ||
-                data?.title?.romaji || <Skeleton />}
-            </h1>
-            <div className={styles.HomeHeroMetaRow2}>
-              <p className={styles.type}>
-                {data ? (type == "movie" ? "MOVIE" : "SHOW") : null}
-              </p>
-              {data ? (
-                <>
-                  {data?.episodes?.length > 0 ? (
-                    <Link
-                      className={styles.links}
-                      data-tooltip-id="tooltip"
-                      data-tooltip-content="Watch Online"
-                      href={`${`${data?.episodes?.length > 0 && `/watch?type=${data?.type?.toLowerCase() === "movie" ? "movie" : "tv"}&id=${data?.episodes[0]?.id}&season=${id}&episode=${data?.episodes[0]?.number}`}`}`}
-                    >
-                      watch <FaPlay className={styles.IconsMobileNone} />
-                    </Link>
-                  ) : (
-                    <Link
-                      className={styles.links}
-                      data-tooltip-id="tooltip"
-                      data-tooltip-content="Watch Online"
-                      href={`#`}
-                    >
-                      No Watch
-                    </Link>
-                  )}
-                  {trailer && (
-                    <Link
-                      className={styles.links}
-                      data-tooltip-id="tooltip"
-                      data-tooltip-content="Watch Trailer"
-                      href={`https://youtube.com/watch?v=${trailer?.id}`}
-                      target="_blank"
-                    >
-                      trailer <FaYoutube className={styles.IconsMobileNone} />
-                    </Link>
-                  )}
-                  {bookmarked ? (
-                    <BsFillBookmarkCheckFill
+            <div className={styles.HomeHeroMeta}>
+              <h1
+                data-tooltip-id="tooltip"
+                data-tooltip-content={
+                  data?.title?.english ||
+                  data?.title?.userPreferred ||
+                  data?.title?.romaji ||
+                  "name"
+                }
+              >
+                {data?.title?.english ||
+                  data?.title?.userPreferred ||
+                  data?.title?.romaji || <Skeleton />}
+              </h1>
+              <div className={styles.HomeHeroMetaRow2}>
+                <p className={styles.type}>
+                  {data ? (type == "movie" ? "MOVIE" : "SHOW") : null}
+                </p>
+                {data ? (
+                  <>
+                    {data?.episodes?.length > 0 ? (
+                      <Link
+                        className={styles.links}
+                        data-tooltip-id="tooltip"
+                        data-tooltip-content="Watch Online"
+                        href={`${`${data?.episodes?.length > 0 && `/watch?type=${data?.type?.toLowerCase() === "movie" ? "movie" : "tv"}&id=${data?.episodes[0]?.id}&season=${id}&episode=${data?.episodes[0]?.number}`}`}`}
+                      >
+                        watch <FaPlay className={styles.IconsMobileNone} />
+                      </Link>
+                    ) : (
+                      <Link
+                        className={styles.links}
+                        data-tooltip-id="tooltip"
+                        data-tooltip-content="Watch Online"
+                        href={`#`}
+                      >
+                        No Watch
+                      </Link>
+                    )}
+                    {trailer && (
+                      <Link
+                        className={styles.links}
+                        data-tooltip-id="tooltip"
+                        data-tooltip-content="Watch Trailer"
+                        href={`https://youtube.com/watch?v=${trailer?.id}`}
+                        target="_blank"
+                      >
+                        trailer <FaYoutube className={styles.IconsMobileNone} />
+                      </Link>
+                    )}
+                    {bookmarked ? (
+                      <BsFillBookmarkCheckFill
+                        className={styles.HomeHeroIcons}
+                        onClick={handleBookmarkRemove}
+                        data-tooltip-id="tooltip"
+                        data-tooltip-content="Remove from Watchlist"
+                      />
+                    ) : (
+                      <BsBookmarkPlus
+                        className={styles.HomeHeroIcons}
+                        onClick={handleBookmarkAdd}
+                        data-tooltip-id="tooltip"
+                        data-tooltip-content="Add to Watchlist"
+                      />
+                    )}
+                    <BsShare
                       className={styles.HomeHeroIcons}
-                      onClick={handleBookmarkRemove}
+                      onClick={handleShare}
                       data-tooltip-id="tooltip"
-                      data-tooltip-content="Remove from Watchlist"
+                      data-tooltip-content="Share"
                     />
-                  ) : (
-                    <BsBookmarkPlus
-                      className={styles.HomeHeroIcons}
-                      onClick={handleBookmarkAdd}
-                      data-tooltip-id="tooltip"
-                      data-tooltip-content="Add to Watchlist"
-                    />
-                  )}
-                  <BsShare
-                    className={styles.HomeHeroIcons}
-                    onClick={handleShare}
-                    data-tooltip-id="tooltip"
-                    data-tooltip-content="Share"
-                  />
-                </>
-              ) : (
-                <div>
-                  <Skeleton width={200} count={1} />
-                </div>
-              )}
+                  </>
+                ) : (
+                  <div>
+                    <Skeleton width={200} count={1} />
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
+        <div className={styles.biggerDetail}>
+          <MetaDetails id={id} type={type} data={data} />
+        </div>
       </div>
-      <div className={styles.biggerDetail}>
-        <MetaDetails id={id} type={type} data={data} />
-      </div>
-    </div>
+    </>
   );
 };
 

@@ -9,6 +9,7 @@ import { BsHddStack, BsHddStackFill } from "react-icons/bs";
 import axiosFetch from "@/Utils/fetchBackend";
 import WatchDetails from "@/components/WatchDetails";
 import Player from "@/components/Artplayer";
+import Head from "next/head";
 
 const Watch = () => {
   const params = useSearchParams();
@@ -64,6 +65,21 @@ const Watch = () => {
     setSeason(params.get("season"));
     setEpisode(params.get("episode"));
     setContinueWatching({ type: params.get("type"), id: params.get("season") });
+    const fetch = async () => {
+      const res: any = await axiosFetch({ requestID: `infoAnime`, id: season });
+      setdata(res);
+      console.log({ res });
+
+      if (typeof res === "string") {
+        toast.info(
+          <div>
+            Data Load Failed due to very large data size. Change provider from
+            settings
+          </div>,
+        );
+      }
+    };
+    if (season !== undefined && season != "" && season != null) fetch();
   }, [params, id, season, episode]);
 
   useEffect(() => {
@@ -173,160 +189,173 @@ const Watch = () => {
   const STREAM_URL_PRO = process.env.NEXT_PUBLIC_STREAM_URL_PRO;
 
   return (
-    <div className={styles.watch}>
-      <div onClick={() => back()} className={styles.backBtn}>
-        <IoReturnDownBack
-          data-tooltip-id="tooltip"
-          data-tooltip-content="go back"
-        />
-      </div>
-      {
-        <div className={styles.episodeControl}>
-          <div
-            ref={moreBtn}
-            onClick={() => setWatchDetails(!watchDetails)}
+    <>
+      <Head>
+        <title>
+          RiveKun | Watch{" "}
+          {season !== undefined && season !== null
+            ? `| ${data?.title?.english || data?.title?.userPreferred || data?.title?.romaji || season}`
+            : null}{" "}
+          {episode !== null && episode !== undefined ? `| E${episode}` : null}
+        </title>
+      </Head>
+      <div className={styles.watch}>
+        <div onClick={() => back()} className={styles.backBtn}>
+          <IoReturnDownBack
             data-tooltip-id="tooltip"
-            data-tooltip-html={
-              !watchDetails
-                ? "More <span class='tooltip-btn'>SHIFT + M</span></div>"
-                : "close <span class='tooltip-btn'>SHIFT + M</span></div>"
-            }
-          >
-            {watchDetails ? <BsHddStackFill /> : <BsHddStack />}
-          </div>
+            data-tooltip-content="go back"
+          />
         </div>
-      }
-      {watchDetails && (
-        <WatchDetails
-          id={id}
-          type={type}
-          data={data}
-          season={season}
-          episode={episode}
-          setWatchDetails={setWatchDetails}
-        />
-      )}
-      <div className={styles.watchSelects}>
-        {embedMode === true && (
-          <select
-            name="source"
-            id="source"
-            aria-placeholder="servers"
-            className={styles.source}
-            value={source}
-            onChange={(e) => {
-              setSource(e.target.value);
-              localStorage.setItem("RiveKunLatestAgg", e.target.value);
-            }}
-          >
-            <option value="PRO" defaultChecked>
-              Aggregator : 1 (Best-Server)
-            </option>
-          </select>
-        )}
-
-        {embedMode === false && (
-          <select
-            name="embedModesource"
-            id="embedModesource"
-            className={styles.embedMode}
-            value={nonEmbedSourcesIndex}
-            onChange={(e) => {
-              setNonEmbedSourcesIndex(e.target.value);
-            }}
-            aria-placeholder="servers"
-          >
-            <option value="" disabled selected>
-              servers
-            </option>
-            {nonEmbedSources?.length > 0 &&
-              nonEmbedSources?.map((ele: any, ind: any) => {
-                if (typeof ele === "object" && ele !== null) {
-                  return (
-                    <option value={ind} defaultChecked>
-                      {ele?.source} ({ele?.quality})
-                    </option>
-                  );
-                }
-              })}
-          </select>
-        )}
-        <select
-          name="embedMode"
-          id="embedMode"
-          className={styles.embedMode}
-          value={embedMode}
-          onChange={(e) => {
-            setEmbedMode(JSON.parse(e.target.value));
-            localStorage.setItem("RiveKunEmbedMode", e.target.value);
-          }}
-        >
-          <option value="true">Embed Mode</option>
-          <option value="false">NON Embed Mode (AD-free)</option>
-        </select>
-      </div>
-      <div className={`${styles.loader} skeleton`}>
-        {embedMode === false && id !== undefined && id !== null ? (
-          <div className={styles.videoProviders}>
-            {nonEmbedVideoProviders?.map((ele: any) => {
-              return (
-                <div
-                  className={`${styles.videoProvider} ${ele?.status === "available" ? styles.available : null} ${ele?.status === "fetching" ? styles.fetching : null} ${ele?.status === "success" ? styles.success : null} ${ele?.status === "error" ? styles.error : null}`}
-                >
-                  <div className={`${styles.videoProviderName}`}>
-                    {ele?.name?.toUpperCase()}
-                  </div>
-                  <div className={`${styles.videoProviderStatus} `}>
-                    {ele?.status}
-                  </div>
-                </div>
-              );
-            })}
-            {nonEmbedSourcesNotFound ? (
-              <p className={`${styles.para2} ${styles.success}`}>
-                Server not found. Automatically switching to Embed Mode.
-              </p>
-            ) : (
-              <p className={styles.para}>
-                If Server not found, Then system will automatically switch to
-                Embed Mode in 10 seconds
-              </p>
-            )}
-          </div>
-        ) : (
-          <div className={`${styles.loader}`}>
-            <div className={`${styles.scanner}`}>
-              <span>Loading..</span>
+        {
+          <div className={styles.episodeControl}>
+            <div
+              ref={moreBtn}
+              onClick={() => setWatchDetails(!watchDetails)}
+              data-tooltip-id="tooltip"
+              data-tooltip-html={
+                !watchDetails
+                  ? "More <span class='tooltip-btn'>SHIFT + M</span></div>"
+                  : "close <span class='tooltip-btn'>SHIFT + M</span></div>"
+              }
+            >
+              {watchDetails ? <BsHddStackFill /> : <BsHddStack />}
             </div>
           </div>
+        }
+        {watchDetails && (
+          <WatchDetails
+            id={id}
+            type={type}
+            data={data}
+            season={season}
+            episode={episode}
+            setWatchDetails={setWatchDetails}
+          />
         )}
-      </div>
-      {embedMode === false && nonEmbedSourcesIndex !== "" && (
-        <Player
-          option={{
-            url: nonEmbedSources[nonEmbedSourcesIndex]?.url,
-          }}
-          format={nonEmbedSources[nonEmbedSourcesIndex]?.isM3U8 ? "hls" : "mp4"}
-          captions={nonEmbedCaptions}
-          className={styles.videoPlayer}
-        />
-      )}
+        <div className={styles.watchSelects}>
+          {embedMode === true && (
+            <select
+              name="source"
+              id="source"
+              aria-placeholder="servers"
+              className={styles.source}
+              value={source}
+              onChange={(e) => {
+                setSource(e.target.value);
+                localStorage.setItem("RiveKunLatestAgg", e.target.value);
+              }}
+            >
+              <option value="PRO" defaultChecked>
+                Aggregator : 1 (Best-Server)
+              </option>
+            </select>
+          )}
 
-      {source === "PRO" && id !== "" && id !== null && embedMode === true ? (
-        <iframe
-          scrolling="no"
-          src={
-            type === "movie"
-              ? `${STREAM_URL_PRO}/embed/anilist/${season}?audio=sub&autoplay=0&theme=00c1db`
-              : `${STREAM_URL_PRO}/embed/anilist/${season}/${episode}?audio=sub&autoplay=0&theme=00c1db`
-          }
-          className={styles.iframe}
-          allowFullScreen
-          allow="accelerometer; autoplay; encrypted-media; gyroscope;"
-          referrerPolicy="origin"
-        ></iframe>
-      ) : null}
-    </div>
+          {embedMode === false && (
+            <select
+              name="embedModesource"
+              id="embedModesource"
+              className={styles.embedMode}
+              value={nonEmbedSourcesIndex}
+              onChange={(e) => {
+                setNonEmbedSourcesIndex(e.target.value);
+              }}
+              aria-placeholder="servers"
+            >
+              <option value="" disabled selected>
+                servers
+              </option>
+              {nonEmbedSources?.length > 0 &&
+                nonEmbedSources?.map((ele: any, ind: any) => {
+                  if (typeof ele === "object" && ele !== null) {
+                    return (
+                      <option value={ind} defaultChecked>
+                        {ele?.source} ({ele?.quality})
+                      </option>
+                    );
+                  }
+                })}
+            </select>
+          )}
+          <select
+            name="embedMode"
+            id="embedMode"
+            className={styles.embedMode}
+            value={embedMode}
+            onChange={(e) => {
+              setEmbedMode(JSON.parse(e.target.value));
+              localStorage.setItem("RiveKunEmbedMode", e.target.value);
+            }}
+          >
+            <option value="true">Embed Mode</option>
+            <option value="false">NON Embed Mode (AD-free)</option>
+          </select>
+        </div>
+        <div className={`${styles.loader} skeleton`}>
+          {embedMode === false && id !== undefined && id !== null ? (
+            <div className={styles.videoProviders}>
+              {nonEmbedVideoProviders?.map((ele: any) => {
+                return (
+                  <div
+                    className={`${styles.videoProvider} ${ele?.status === "available" ? styles.available : null} ${ele?.status === "fetching" ? styles.fetching : null} ${ele?.status === "success" ? styles.success : null} ${ele?.status === "error" ? styles.error : null}`}
+                  >
+                    <div className={`${styles.videoProviderName}`}>
+                      {ele?.name?.toUpperCase()}
+                    </div>
+                    <div className={`${styles.videoProviderStatus} `}>
+                      {ele?.status}
+                    </div>
+                  </div>
+                );
+              })}
+              {nonEmbedSourcesNotFound ? (
+                <p className={`${styles.para2} ${styles.success}`}>
+                  Server not found. Automatically switching to Embed Mode.
+                </p>
+              ) : (
+                <p className={styles.para}>
+                  If Server not found, Then system will automatically switch to
+                  Embed Mode in 10 seconds
+                </p>
+              )}
+            </div>
+          ) : (
+            <div className={`${styles.loader}`}>
+              <div className={`${styles.scanner}`}>
+                <span>Loading..</span>
+              </div>
+            </div>
+          )}
+        </div>
+        {embedMode === false && nonEmbedSourcesIndex !== "" && (
+          <Player
+            option={{
+              url: nonEmbedSources[nonEmbedSourcesIndex]?.url,
+            }}
+            format={
+              nonEmbedSources[nonEmbedSourcesIndex]?.isM3U8 ? "hls" : "mp4"
+            }
+            captions={nonEmbedCaptions}
+            className={styles.videoPlayer}
+          />
+        )}
+
+        {source === "PRO" && id !== "" && id !== null && embedMode === true ? (
+          <iframe
+            scrolling="no"
+            src={
+              type === "movie"
+                ? `${STREAM_URL_PRO}/embed/anilist/${season}?audio=sub&autoplay=0&theme=00c1db`
+                : `${STREAM_URL_PRO}/embed/anilist/${season}/${episode}?audio=sub&autoplay=0&theme=00c1db`
+            }
+            className={styles.iframe}
+            allowFullScreen
+            allow="accelerometer; autoplay; encrypted-media; gyroscope;"
+            referrerPolicy="origin"
+          ></iframe>
+        ) : null}
+      </div>
+    </>
   );
 };
 
