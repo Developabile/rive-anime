@@ -23,38 +23,19 @@ Steps to get the credentials:
 - Under Your apps, click on the Web app (</>) icon to register a new app.
 - Copy the config object's values into your `.env` file.
 
-## 2. TMDB configuration
+## 2. Anilist or Consumet API
 
 ```.env
-  NEXT_PUBLIC_TMDB_API=https://api.themoviedb.org/3
-  NEXT_PUBLIC_TMDB_API_KEY=
-  NEXT_PUBLIC_TMBD_IMAGE_URL=https://image.tmdb.org/t/p/original/
+  NEXT_PUBLIC_ANILIST_API=
 ```
 
-Steps to get TMDB API KEY
-
-- Go to the [TMDB website](https://www.themoviedb.org/).
-- Sign up or log in to your account.
-- Navigate to Account Settings > API.
-- Request an API key if you don't have one already.
-- Copy your API key into your `.env` file.
+Anilist : https://anilist.gitbook.io/anilist-apiv2-docs/overview/graphql/getting-started  
+Consumet : https://github.com/consumet/api.consumet.org
 
 ## 3. Video Streaming API
 
 ```.env
-NEXT_PUBLIC_STREAM_URL_AGG=
-NEXT_PUBLIC_STREAM_URL_VID=
 NEXT_PUBLIC_STREAM_URL_PRO=
-NEXT_PUBLIC_STREAM_URL_EMB=
-NEXT_PUBLIC_STREAM_URL_MULTI=
-NEXT_PUBLIC_STREAM_URL_SUP=
-NEXT_PUBLIC_STREAM_URL_CLUB=
-NEXT_PUBLIC_STREAM_URL_SMASH=
-NEXT_PUBLIC_STREAM_URL_ONE=
-NEXT_PUBLIC_STREAM_URL_ANY=
-NEXT_PUBLIC_STREAM_URL_RGS=
-NEXT_PUBLIC_STREAM_URL_WEB=
-NEXT_PUBLIC_STREAM_URL_WEB=
 ```
 
 These are all the different streaming services used, that can't be disclosed directly.  
@@ -69,15 +50,7 @@ And if you are going to create your own website, then I would recommend to go th
 They have created a list of services, but some may have stopped working, still you will get working ones also.  
 If you do some researching, then you will find the right services here.
 
-## 4. Vidsrc Scrapper API
-
-```.env
-NEXT_PUBLIC_PROVIDER_URL=
-```
-
-You can find the api, if you search for **vidsrc scrappers**, here we are using a 3rd party API(not ours) which scrapes vidsrc.to and vidsrc.me
-
-## 5. Google Analytics
+## 4. Google Analytics
 
 ```.env
 NEXT_PUBLIC_GT_MEASUREMENT_ID=
@@ -86,7 +59,7 @@ NEXT_PUBLIC_GT_MEASUREMENT_ID=
 Add your Measurement ID from your Google Tag Manager/ Google Analytics, to track websites for Analytics purposes.  
 We are usig Google Analytics with Google Tag Manager to track multiple deployments.  
 This is optional, either add this env variable  
-Or comment out these three lines _(line 13 , 18 & 80)_ in `./src/pages/_app.tsx`:
+Or comment out these three lines _(line 13 , 18 & 110)_ in `./src/pages/_app.tsx`:
 
 ```js
 import { GoogleAnalytics } from "@next/third-parties/google";
@@ -115,8 +88,8 @@ If there are anymore env vars left, give them any random values, as they were us
 
 > [!IMPORTANT]
 >
-> Rive-Next does not host any files, it merely links to 3rd party services.  
+> Rive-Anime(RiveKun) does not host any files, it merely links to 3rd party services.  
 > Legal issues should be taken up with the file hosts and providers.  
-> Rive-Next is not responsible for any media files shown by the video providers.
+> Rive-Anime(RiveKun) is not responsible for any media files shown by the video providers.
 
 Happy Coding :)
