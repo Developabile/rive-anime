@@ -2,16 +2,21 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import axiosFetch from "@/Utils/fetch";
 import { getCache, setCache } from "@/Utils/cache";
 
+export const runtime = "edge";
+import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
+
 export default async function handler(
-  req: NextApiRequest,
+  req: NextRequest,
   res: NextApiResponse<any>,
 ) {
-  const cacheKey = JSON.stringify(req?.query);
+  const ApiQuery = Object.fromEntries(req?.nextUrl?.searchParams?.entries());
+  const cacheKey = JSON.stringify(ApiQuery);
 
   // Check if the result for this query is already cached
   const cachedResult = getCache(cacheKey);
   if (cachedResult) {
-    return res.status(200).json(cachedResult);
+    return NextResponse.json(cachedResult);
   }
   const {
     requestID,
@@ -26,7 +31,7 @@ export default async function handler(
     format,
     year,
     animeStatus,
-  }: any = req?.query;
+  }: any = ApiQuery;
   // console.log({
   //   requestID,
   //   id,
@@ -57,6 +62,6 @@ export default async function handler(
   // Cache the result
   setCache(cacheKey, result);
   // console.log({ result });
-  res?.status(200)?.json(result);
+  return NextResponse.json(result);
   // res.status(200).json({ name: "John Doe" });
 }
