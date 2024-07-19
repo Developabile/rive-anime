@@ -187,16 +187,11 @@ const SettingsPage = ({
           >
             Disclaimer
           </Link>
-          <Link href="mailto:kumarashishranjan4971@hotmail.com">
-            Contact Us
-          </Link>
+          <Link href="mailto:aarav4dev@hotmail.com">Contact Us</Link>
           {/* <Link href="/contact">Contact Us</Link> */}
         </div>
         <h1>Links</h1>
         <div className={styles.group}>
-          <Link href={"https://github.com/Developabile/rive-anime"}>
-            <FaGithub /> Github
-          </Link>
           <Link href={"https://discord.gg/6xJmJja8fV"}>
             <FaDiscord /> Discord
           </Link>
