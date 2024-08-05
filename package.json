@@ -33,13 +33,13 @@
     "sonner": "^1.5.0"
   },
   "devDependencies": {
-    "@types/node": "^20",
+    "@types/node": "^22",
     "@types/nprogress": "^0.2.3",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@types/react-lazy-load-image-component": "^1.6.4",
-    "husky": "^9.0.11",
-    "prettier": "^3.3.2",
+    "husky": "^9.1.4",
+    "prettier": "^3.3.3",
     "typescript": "^5"
   }
 }
